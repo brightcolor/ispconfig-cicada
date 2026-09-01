@@ -234,9 +234,16 @@ richtige Kontrast.
   `style`-Attribut. `#000000` wird per Attributselektor abgefangen; kommt in
   einer neuen Version ein weiterer fester Wert dazu, fällt er durch.
 
-## Herkunft
+## Lizenz und Herkunft
+
+Dieses Theme steht unter der **BSD-2-Clause-Lizenz** (siehe `LICENSE`) — wie
+sein Vorbild und wie ISPConfig selbst.
 
 Farbwerte und Anmutung stammen aus dem Cicada-Theme für OPNsense
-(`misc/theme-cicada`, BSD-2-Clause). Übernommen wurden keine Dateien, nur die
-Palette und die Formensprache. Das Vorbild gehört seinen Urhebern; für dieses
-Theme ist noch keine Lizenz festgelegt.
+(`misc/theme-cicada`, BSD-2-Clause, rene@team-rebellion.net). Übernommen
+wurden keine Dateien, nur die Palette und die Formensprache.
+
+`tools/make-templates.sh` leitet zur Installationszeit zwei Templates aus dem
+Standard-Theme des Zielsystems ab. Diese Dateien gehören dem
+ISPConfig-Projekt (BSD-3-Clause) und entstehen erst auf dem jeweiligen
+Server — mitgeliefert werden sie nicht.
