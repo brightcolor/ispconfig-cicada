@@ -4,6 +4,18 @@ Alle nennenswerten Änderungen an diesem Theme.
 Das Format folgt [Keep a Changelog](https://keepachangelog.com/de/1.1.0/),
 die Versionierung [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.2.2] — 2026-09-01
+
+### Behoben
+
+- **Dokumentation: Nur *Werkzeuge → Einstellungen* wirkt sofort.** Die
+  README nannte die drei Wege zum Umstellen gleichwertig nebeneinander.
+  Tatsächlich ruft allein `tools/user_settings.php` `updateSessionTheme()`
+  auf und lädt die Seite neu; `admin/users_edit.php` und
+  `client/client_edit.php` schreiben den Wert nur in die Datenbank. Die
+  laufende Sitzung behält `$_SESSION['s']['theme']` bis zum nächsten
+  Anmelden — ohne Hinweis, sodass das Umstellen wirkungslos aussieht.
+
 ## [0.2.1] — 2026-09-01
 
 ### Behoben

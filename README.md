@@ -10,7 +10,7 @@ handelt, kantige 2–3-px-Radien.
 
 **Läuft auf ISPConfig 3.2 und 3.3.** Geprüft gegen 3.2.12p1 und 3.3.2.
 
-**Stand: 0.2.1 — auf einem echten ISPConfig-System noch nicht gelaufen.**
+**Stand: 0.2.2 — auf einem echten ISPConfig-System noch nicht gelaufen.**
 Gebaut und geprüft wurde gegen den Quelltext beider Zweige und gegen eine
 Prüfseite mit echtem Panel-Markup (siehe *Prüfen*). Vor dem Produktivbetrieb
 auf einem Testsystem durchspielen.
@@ -33,15 +33,22 @@ vorher zur Seite gelegt.
 Das Theme lässt sich danach **pro Benutzer** wählen; es zwingt niemandem
 etwas auf:
 
-| Wo | Für wen |
-|---|---|
-| *Werkzeuge → Einstellungen* | für den eigenen Benutzer |
-| *System → Benutzer → Bearbeiten* | für einen anderen Administrator |
-| *Kunde → Bearbeiten* | für einen Kunden |
-| `$conf['theme']` in `interface/lib/config.inc.php` | als Vorgabe für neue Benutzer |
+| Wo | Für wen | Wirkt |
+|---|---|---|
+| *Werkzeuge → Einstellungen* | für den eigenen Benutzer | **sofort** |
+| *System → Benutzer → Bearbeiten* | für einen anderen Administrator | erst nach dem nächsten Anmelden |
+| *Kunde → Bearbeiten* | für einen Kunden | erst nach dem nächsten Anmelden |
+| `$conf['theme']` in `interface/lib/config.inc.php` | als Vorgabe für neue Benutzer | für neue Sitzungen |
 
-Zum Ausprobieren also: eigenen Benutzer umstellen, alle anderen bleiben auf
-`default`.
+> **Sieht nach dem Umstellen alles aus wie vorher?** Dann wurde das Theme
+> vermutlich nicht über *Werkzeuge → Einstellungen* gesetzt. **Nur diese
+> Maske** ruft `updateSessionTheme()` auf und lädt die Seite neu;
+> `admin/users_edit.php` und `client/client_edit.php` schreiben den Wert nur
+> in die Datenbank. Die laufende Sitzung behält `$_SESSION['s']['theme']` bis
+> zum nächsten Anmelden — ohne jeden Hinweis. **Abmelden und neu anmelden.**
+
+Zum Ausprobieren also: eigenen Benutzer unter *Werkzeuge → Einstellungen*
+umstellen, alle anderen bleiben auf `default`.
 
 ## Die Versionsfalle
 
