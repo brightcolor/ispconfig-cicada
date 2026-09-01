@@ -4,6 +4,44 @@ Alle nennenswerten Änderungen an diesem Theme.
 Das Format folgt [Keep a Changelog](https://keepachangelog.com/de/1.1.0/),
 die Versionierung [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.2.0] — 2026-09-01
+
+Unterstützung für ISPConfig 3.2. Die Stilvorlage selbst blieb unverändert —
+3.2 und 3.3 unterscheiden sich weder im Farbschema noch in den
+ISPConfig-eigenen Klassen, und `main_login.tpl.htm` ist in beiden Zweigen
+identisch.
+
+### Behoben
+
+- **Auf 3.2 wäre das Theme unsichtbar geblieben.** Die Zweige filtern die
+  Auswahlliste gegensätzlich: 3.3 *verlangt* die Datei `ispconfig_version`
+  und vergleicht Major.Minor; 3.2 listet ein Theme **ohne** diese Datei
+  bedingungslos, verlangt bei vorhandener Datei aber Gleichheit mit der
+  **vollen** Version (`3.2.12p1`, nicht `3.2`). Die mitgelieferte Datei mit
+  Inhalt `3.2` hätte das Theme aus der Liste fallen lassen — wortlos, wie
+  beide Zweige das tun.
+
+### Geändert
+
+- Die beiden Templates werden **nicht mehr mitgeliefert**, sondern beim
+  Installieren aus dem Standard-Theme des Zielsystems abgeleitet
+  (`tools/make-templates.sh`). Sie unterscheiden sich zwischen den Zweigen —
+  3.3 lädt zusätzlich `bootstrap-icons.min.css` und `chart.umd.js` —, und ein
+  Template aus dem falschen Zweig verweist auf Dateien, die es dort nicht
+  gibt. Das Skript prüft jede seiner vier Änderungen nach und bricht ab, wenn
+  eine nicht sitzt.
+- `install.sh` erkennt den Zweig am Vorhandensein von
+  `theme_is_compatible()`, legt `ispconfig_version` entsprechend an oder eben
+  nicht, und prüft nach dem Kopieren alle Asset-Verweise.
+- **Nach einem ISPConfig-Update muss `install.sh` erneut laufen.** Steht in
+  der README.
+
+### Neu
+
+- `tools/check-listed.php` beantwortet die Frage, bei der beide Zweige
+  schweigen: Erscheint das Theme in der Auswahlliste? Bildet beide Filter
+  nach und begründet jedes Urteil.
+
 ## [0.1.0] — 2026-09-01
 
 Erste Fassung. Auf einem echten ISPConfig-System noch nicht gelaufen.
