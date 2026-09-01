@@ -1,1 +1,2 @@
-# nothing generated here yet; kept so the file exists when it is needed
+# release archives built with: git archive --format=tar.gz --prefix=... -o ... <tag>
+*.tar.gz
