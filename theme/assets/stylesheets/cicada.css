@@ -1,0 +1,1906 @@
+/* ==========================================================================
+   Cicada for ISPConfig
+   A dark onyx theme for the ISPConfig 3.3 control panel, after the Cicada
+   theme for OPNsense (misc/theme-cicada, rene@team-rebellion.net).
+
+   This sheet loads last and fully replaces themes/default/theme.min.css.
+   It has to cover three layers:
+
+     1. Bootstrap 3 components  - bootstrap.min.css ships light values
+     2. ISPConfig's own classes - ispconfig.css carries structure without
+                                  colour, the colour lives in the theme sheet
+     3. Hard-coded light values - a handful of literals sit inside
+                                  ispconfig.css, pushy.css and select2.css
+
+   Where a rule paints over an element that carries a background *image*
+   (the logo, the ajax spinner, the flag sprite, the select2 arrows), only
+   background-color is touched - the shorthand would drop the image.
+   ========================================================================== */
+
+:root {
+	/* Surfaces, darkest first */
+	--cic-sunken:      #151515; /* input with focus */
+	--cic-line:        #191919; /* default border */
+	--cic-page:        #1c1c1c; /* page ground */
+	--cic-head:        #202020; /* panel and table headers */
+	--cic-surface:     #222222; /* panels, inputs, buttons, navigation */
+	--cic-raised:      #292929; /* dropdowns, active tab */
+	--cic-hover:       #2d2d2d; /* hover on a raised surface */
+	--cic-overlay:     #383838; /* modal dialog */
+	--cic-line-soft:   #3c3c3b; /* progress track, quiet dividers */
+	--cic-line-loud:   #5a5a5a; /* focused and active borders */
+
+	/* Type */
+	--cic-text:        #bac3ca;
+	--cic-text-loud:   #ffffff;
+	--cic-text-dim:    #8b9298; /* lifted from Cicada's #777 to clear AA */
+
+	/* Accent. Fills use the original burnt orange; text uses the same hue
+	   lifted ~8% so links clear WCAG AA on every surface in this file. */
+	--cic-accent:      #dd630d;
+	--cic-accent-text: #ef7d21;
+	--cic-accent-deep: #a84c0b;
+
+	/* Type that sits ON a bright fill. White over #dd630d measures 3.6:1,
+	   under the 4.5:1 AA floor - so the fill keeps Cicada's colour exactly
+	   and the label goes dark instead of the fill going muddy. */
+	--cic-on-accent:   #1c1c1c;
+
+	/* Status. Two values per hue where the same colour has to work both as
+	   a fill (dark label on top) and as text on the dark ground (needs to
+	   be lighter than the fill). --cic-bad is a shade deeper than Cicada's
+	   #db4829 so white on it reaches 4.7:1. */
+	--cic-ok:          #46a50c;
+	--cic-ok-text:     #6cc82e;
+	--cic-ok-mid:      #2f8a0d;
+	--cic-ok-deep:     #226808;
+	--cic-warn:        #de7313;
+	--cic-warn-lift:   #ef8a2b;
+	--cic-bad:         #d13f22;
+	--cic-bad-text:    #f0674a;
+	--cic-bad-deep:    #b13116;
+
+	/* Motion. ISPConfig ships 500ms transitions, which read as sluggish;
+	   Cicada uses 100ms. This sits between the two. */
+	--cic-move:        150ms;
+
+	color-scheme: dark; /* native scrollbars, selects and pickers follow */
+}
+
+/* ==========================================================================
+   1. Ground and type
+   ========================================================================== */
+
+html,
+body {
+	-webkit-tap-highlight-color: rgba(221, 99, 13, .3);
+}
+
+body {
+	background: var(--cic-page);
+	color: var(--cic-text);
+}
+
+h1, h2, h3, h4, h5, h6,
+legend,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+	color: var(--cic-text-loud);
+}
+
+legend {
+	border-bottom-color: var(--cic-line);
+}
+
+hr {
+	border-top-color: var(--cic-line);
+}
+
+a {
+	color: var(--cic-accent-text);
+}
+
+a:hover,
+a:focus {
+	color: var(--cic-accent-text);
+	text-decoration: underline;
+}
+
+/* A focus ring that survives on every surface in this theme. */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible,
+.btn:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+	outline: 2px solid var(--cic-accent-text);
+	outline-offset: 2px;
+}
+
+small,
+.small,
+.text-muted,
+.help-block {
+	color: var(--cic-text-dim);
+}
+
+code,
+kbd,
+pre,
+samp {
+	background-color: var(--cic-head);
+	color: var(--cic-text);
+	border: 1px solid var(--cic-line);
+}
+
+pre {
+	border-radius: 3px;
+}
+
+::selection {
+	background: var(--cic-accent);
+	color: var(--cic-on-accent);
+}
+
+.green,
+.text-success,
+.text-info {
+	color: var(--cic-ok);
+}
+
+.text-warning {
+	color: var(--cic-warn);
+}
+
+.text-danger {
+	color: var(--cic-bad-text) !important;
+}
+
+.text-primary {
+	color: var(--cic-accent-text);
+}
+
+/* ==========================================================================
+   2. Header: logo, search, logout
+   ========================================================================== */
+
+/* The panel logo arrives as a base64 background image made for a light
+   ground, and it may be a customer's own. Flattening it to a white
+   silhouette works for any artwork. Delete this rule to keep the original
+   colours. */
+#logo {
+	filter: brightness(0) invert(1);
+	opacity: .82;
+	transition: opacity var(--cic-move) ease;
+}
+
+#logo:hover {
+	opacity: 1;
+}
+
+#headerbar .btn,
+#searchform button {
+	background: var(--cic-surface);
+	border: 1px solid var(--cic-line);
+	color: var(--cic-text);
+}
+
+#searchform button:hover {
+	background: var(--cic-hover);
+	color: var(--cic-accent-text);
+}
+
+#logout-button,
+#logout-button.btn-danger {
+	background: var(--cic-surface);
+	border: 1px solid var(--cic-line);
+	border-bottom-color: var(--cic-bad-deep);
+	color: var(--cic-text);
+	transition: all var(--cic-move) ease;
+}
+
+#logout-button:hover,
+#logout-button.btn-danger:hover,
+#logout-button:focus {
+	background: var(--cic-bad-deep);
+	border-bottom-color: var(--cic-bad);
+	color: #fff;
+}
+
+/* Pending-changes badge. ispconfig.css pulses it between two reds; the
+   keyframes are redefined here so the pulse stays on the Cicada palette. */
+.notification {
+	background: var(--cic-bad-deep);
+}
+
+@keyframes pulse {
+	0%   { background: var(--cic-bad); }
+	50%  { background: var(--cic-bad-deep); }
+	100% { background: var(--cic-bad); }
+}
+
+span.notification_text {
+	color: #fff;
+}
+
+/* ==========================================================================
+   3. Main navigation
+   ========================================================================== */
+
+#main-navigation a {
+	background: var(--cic-surface);
+	border: 1px solid var(--cic-line);
+	border-bottom-width: 2px;
+	color: var(--cic-text);
+	transition: all var(--cic-move) ease;
+}
+
+#main-navigation a:hover {
+	background: var(--cic-hover);
+	border-bottom-color: var(--cic-line-loud);
+	color: var(--cic-accent-text);
+}
+
+#main-navigation a.active {
+	background: var(--cic-raised);
+	border-bottom-color: var(--cic-accent);
+	color: var(--cic-accent-text);
+}
+
+#main-navigation .icon,
+#main-navigation .bi-icon {
+	text-shadow: none;
+}
+
+/* ==========================================================================
+   4. Module tiles (start page)
+   ========================================================================== */
+
+.modules li {
+	background: var(--cic-head);
+	border-color: var(--cic-line);
+	box-shadow: none;
+	transition: border-color var(--cic-move) ease;
+}
+
+.modules li:hover {
+	border-color: var(--cic-line-loud);
+}
+
+.modules a {
+	color: var(--cic-text);
+}
+
+.modules .icon,
+.modules .bi-icon {
+	color: var(--cic-accent);
+}
+
+.modules .button {
+	background: var(--cic-surface);
+	border: 1px solid var(--cic-line);
+	border-bottom-width: 2px;
+	color: var(--cic-text);
+	transition: all var(--cic-move) ease;
+}
+
+.modules .button:hover,
+.modules .button.active {
+	background: var(--cic-hover);
+	border-bottom-color: var(--cic-accent);
+	color: var(--cic-accent-text);
+}
+
+/* ==========================================================================
+   5. News sidebar
+   ========================================================================== */
+
+#sidebar {
+	background: var(--cic-surface);
+	border-color: var(--cic-line);
+}
+
+#sidebar header {
+	background: var(--cic-head);
+	color: var(--cic-accent-text);
+	border-bottom: 1px solid var(--cic-line);
+}
+
+#sidebar li {
+	border-top-color: var(--cic-line);
+}
+
+#sidebar a {
+	color: inherit;
+	transition: color var(--cic-move) ease;
+}
+
+#sidebar a:hover {
+	color: var(--cic-accent-text);
+	text-decoration: none;
+}
+
+.page-header {
+	border-color: var(--cic-line);
+}
+
+#footer {
+	border-top-color: var(--cic-line);
+	color: var(--cic-text-dim);
+}
+
+/* ==========================================================================
+   6. Content tabs
+   ========================================================================== */
+
+.content-tab-wrapper {
+	background: var(--cic-page);
+	border-color: var(--cic-line);
+}
+
+.content-tab-wrapper .nav-tabs {
+	background: var(--cic-head);
+	box-shadow: none;
+}
+
+/* ispconfig.css sets `border: none !important` here, so the colour needs
+   the same weight to land. */
+.content-tab-wrapper .nav-tabs > li > a {
+	background: transparent;
+	border-right-color: var(--cic-line) !important;
+	color: var(--cic-text);
+	transition: background var(--cic-move) ease, color var(--cic-move) ease;
+}
+
+.content-tab-wrapper .nav-tabs > li > a:hover {
+	background: var(--cic-hover);
+	color: var(--cic-accent-text);
+}
+
+.content-tab-wrapper .nav-tabs .active a,
+.content-tab-wrapper .nav-tabs .active a:hover,
+.content-tab-wrapper .nav-tabs .active a:focus {
+	background: var(--cic-page) !important;
+	color: var(--cic-accent-text);
+}
+
+/* Plain Bootstrap tabs, outside the wrapper */
+.nav-tabs {
+	border-bottom-color: var(--cic-line);
+}
+
+.nav-tabs > li > a {
+	background: var(--cic-surface);
+	border-color: var(--cic-line);
+	color: var(--cic-text);
+}
+
+.nav-tabs > li > a:hover {
+	background: var(--cic-hover);
+	border-color: var(--cic-line);
+	color: var(--cic-accent-text);
+}
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+	background: var(--cic-raised);
+	border-color: var(--cic-line-loud);
+	border-bottom-color: transparent;
+	color: var(--cic-accent-text);
+}
+
+.nav > li > a:hover,
+.nav > li > a:focus {
+	background-color: var(--cic-hover);
+}
+
+.nav .open > a,
+.nav .open > a:hover,
+.nav .open > a:focus {
+	background-color: var(--cic-raised);
+	border-color: var(--cic-line);
+}
+
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:hover,
+.nav-pills > li.active > a:focus {
+	background-color: var(--cic-accent);
+	color: var(--cic-on-accent);
+}
+
+.tab-content {
+	background: var(--cic-page);
+}
+
+/* ==========================================================================
+   7. Tables and list pages
+   ========================================================================== */
+
+.table-wrapper {
+	background: var(--cic-page);
+	border-color: var(--cic-line);
+}
+
+.table {
+	color: var(--cic-text);
+}
+
+.table caption {
+	color: var(--cic-text-loud);
+	border-bottom-color: var(--cic-line);
+}
+
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+	border-color: var(--cic-line);
+}
+
+.table tbody tr {
+	border-top-color: var(--cic-line);
+	transition: background var(--cic-move) ease;
+}
+
+.table tbody tr:nth-child(odd) {
+	background: var(--cic-page);
+}
+
+.table tbody tr:nth-child(even) {
+	background: var(--cic-head);
+}
+
+.table tbody tr:hover,
+.table-hover > tbody > tr:hover > td,
+.table-hover > tbody > tr:hover > th {
+	background: var(--cic-hover);
+}
+
+/* In an ISPConfig list every cell is a link to the edit form. Left at the
+   accent colour the whole table reads as one orange block, so cell links
+   carry body text and pick up the accent when the row is hovered. */
+.table tbody td > a,
+.table tbody th > a {
+	color: var(--cic-text);
+}
+
+.table tbody tr:hover td > a,
+.table tbody tr:hover th > a,
+.table tbody td > a:hover,
+.table tbody td > a:focus {
+	color: var(--cic-accent-text);
+}
+
+/* Buttons inside a cell are not cell links */
+.table tbody td > a.btn {
+	color: var(--cic-text);
+}
+
+.table tbody td > a.btn:hover {
+	color: var(--cic-accent-text);
+}
+
+.table tbody td > a.formbutton-danger,
+.table tbody tr:hover td > a.formbutton-danger {
+	color: #fff;
+}
+
+.table-bordered,
+.table-bordered > thead > tr > th,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > tbody > tr > td,
+.table-bordered > tfoot > tr > td {
+	border-color: var(--cic-line);
+}
+
+.table > thead > tr > td.active,
+.table > tbody > tr > td.active,
+.table > tbody > tr.active > td,
+.table > tbody > tr.active > th {
+	background-color: var(--cic-line-soft);
+}
+
+/* Sortable list header. The default theme paints a blue-grey gradient. */
+thead.dark {
+	background: var(--cic-head) !important;
+	color: var(--cic-text-loud);
+	border-bottom: 1px solid var(--cic-line);
+}
+
+thead.dark th {
+	border-color: var(--cic-line) !important;
+}
+
+/* Second header row holds the filter inputs */
+thead.dark tr:nth-child(2) {
+	background: var(--cic-surface) !important;
+}
+
+thead.dark th[data-column]:before {
+	color: var(--cic-text-dim);
+}
+
+thead.dark th[data-column][data-ordered] {
+	background: var(--cic-hover);
+}
+
+thead.dark th[data-column][data-ordered]:before {
+	color: var(--cic-accent-text);
+}
+
+.tfooter {
+	background: var(--cic-head);
+	border-top-color: var(--cic-line);
+}
+
+/* ==========================================================================
+   8. Forms
+   ========================================================================== */
+
+label,
+.control-label {
+	color: var(--cic-text);
+}
+
+.form-control,
+select,
+textarea,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"] {
+	background-color: var(--cic-surface);
+	border: 1px solid var(--cic-line);
+	border-radius: 3px;
+	color: var(--cic-text);
+	box-shadow: none;
+	transition: border-color var(--cic-move) ease-in-out,
+	            background-color var(--cic-move) ease-in-out;
+}
+
+.form-control:hover,
+select:hover,
+textarea:hover,
+input[type="text"]:hover,
+input[type="password"]:hover,
+input[type="number"]:hover,
+input[type="email"]:hover,
+input[type="url"]:hover,
+input[type="search"]:hover,
+input[type="tel"]:hover {
+	border-color: var(--cic-line-loud);
+}
+
+.form-control:focus,
+select:focus,
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus {
+	background-color: var(--cic-sunken);
+	border-color: var(--cic-accent);
+	color: var(--cic-text-loud);
+	box-shadow: none;
+	outline: 0;
+}
+
+.form-control[readonly],
+.form-control[disabled],
+fieldset[disabled] .form-control,
+select[disabled],
+textarea[disabled],
+input[disabled] {
+	background-color: var(--cic-head);
+	color: var(--cic-text-dim);
+	cursor: not-allowed;
+}
+
+.form-control::placeholder {
+	color: var(--cic-text-dim);
+}
+
+/* Chrome paints autofilled fields light blue */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+	-webkit-text-fill-color: var(--cic-text);
+	-webkit-box-shadow: 0 0 0 1000px var(--cic-surface) inset;
+	caret-color: var(--cic-text);
+}
+
+.input-group-addon {
+	background-color: var(--cic-head);
+	border-color: var(--cic-line);
+	color: var(--cic-text);
+}
+
+.input-group-field {
+	background-color: var(--cic-surface);
+	border-color: var(--cic-line);
+}
+
+/* Validation states */
+.has-error .form-control,
+.has-error input,
+.has-error select,
+.has-error textarea {
+	border-color: var(--cic-bad);
+}
+
+.has-error .control-label,
+.has-error .help-block,
+.has-error .form-control-feedback {
+	color: var(--cic-bad-text);
+}
+
+.has-success .form-control {
+	border-color: var(--cic-ok);
+}
+
+.has-success .control-label,
+.has-success .help-block,
+.has-success .form-control-feedback {
+	color: var(--cic-ok-text);
+}
+
+.has-warning .form-control {
+	border-color: var(--cic-warn);
+}
+
+.has-warning .control-label,
+.has-warning .help-block,
+.has-warning .form-control-feedback {
+	color: var(--cic-warn-lift);
+}
+
+/* Checkboxes and radios keep their native look via color-scheme, this
+   only tints them. */
+input[type="checkbox"],
+input[type="radio"] {
+	accent-color: var(--cic-accent);
+}
+
+fieldset {
+	border-color: var(--cic-line);
+}
+
+/* Password strength meter */
+#passBar {
+	background-color: var(--cic-line-soft);
+}
+
+/* ==========================================================================
+   9. Buttons
+   ========================================================================== */
+
+.btn {
+	background-color: var(--cic-surface);
+	border: 1px solid var(--cic-line);
+	color: var(--cic-text);
+	border-radius: 3px;
+	transition: all var(--cic-move) ease;
+}
+
+.btn:hover,
+.btn:focus,
+.btn.focus {
+	background-color: var(--cic-hover);
+	border-color: var(--cic-line-loud);
+	color: var(--cic-accent-text);
+}
+
+.btn:active,
+.btn.active,
+.open > .btn.dropdown-toggle {
+	background-color: var(--cic-hover);
+	border-color: var(--cic-line-loud);
+	color: var(--cic-accent-text);
+	box-shadow: none;
+}
+
+.btn[disabled],
+.btn.disabled,
+fieldset[disabled] .btn {
+	background-color: var(--cic-head);
+	border-color: var(--cic-line);
+	color: var(--cic-text-dim);
+	opacity: .65;
+}
+
+.btn-default {
+	background-color: var(--cic-surface);
+	border-color: var(--cic-line);
+	color: var(--cic-text);
+}
+
+.btn-primary {
+	background-color: var(--cic-accent);
+	border-color: var(--cic-line);
+	color: var(--cic-on-accent);
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active {
+	background-color: var(--cic-accent-text);
+	border-color: var(--cic-line);
+	color: var(--cic-on-accent);
+}
+
+.btn-success {
+	background-color: var(--cic-ok);
+	border-color: var(--cic-line);
+	color: var(--cic-on-accent);
+}
+
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active {
+	background-color: var(--cic-ok-text);
+	border-color: var(--cic-line);
+	color: var(--cic-on-accent);
+}
+
+.btn-info {
+	background-color: var(--cic-ok-deep);
+	border-color: var(--cic-line);
+	color: #fff;
+}
+
+.btn-info:hover,
+.btn-info:focus,
+.btn-info:active {
+	background-color: var(--cic-ok-mid);
+	border-color: var(--cic-line);
+	color: #fff;
+}
+
+.btn-warning {
+	background-color: var(--cic-warn);
+	border-color: var(--cic-line);
+	color: var(--cic-on-accent);
+}
+
+.btn-warning:hover,
+.btn-warning:focus,
+.btn-warning:active {
+	background-color: var(--cic-warn-lift);
+	border-color: var(--cic-line);
+	color: var(--cic-on-accent);
+}
+
+.btn-danger {
+	background-color: var(--cic-bad);
+	border-color: var(--cic-line);
+	color: #fff;
+}
+
+.btn-danger:hover,
+.btn-danger:focus,
+.btn-danger:active {
+	background-color: var(--cic-bad-deep);
+	border-color: var(--cic-line);
+	color: #fff;
+}
+
+.btn-link {
+	color: var(--cic-accent-text);
+	background: transparent;
+	border-color: transparent;
+}
+
+.btn-link:hover {
+	color: var(--cic-accent-text);
+	background: transparent;
+	text-decoration: underline;
+}
+
+/* ISPConfig's own form buttons. The default theme gives them white
+   gradients; flat surfaces suit Cicada and keep the accent for the
+   primary action. */
+.formbutton-default {
+	background: var(--cic-surface);
+	border: 1px solid var(--cic-line);
+	border-bottom-width: 2px;
+	border-bottom-color: var(--cic-line);
+	color: var(--cic-text);
+	transition: all var(--cic-move) ease;
+}
+
+.formbutton-default:hover,
+.formbutton-default.active {
+	background: var(--cic-hover);
+	border-bottom-color: var(--cic-accent);
+	color: var(--cic-accent-text);
+}
+
+.formbutton-success {
+	background: var(--cic-accent);
+	border-color: var(--cic-line);
+	border-bottom-color: var(--cic-accent-deep);
+	color: var(--cic-on-accent);
+	transition: all var(--cic-move) ease;
+}
+
+.formbutton-success:hover,
+.formbutton-success.active {
+	background: var(--cic-accent-text);
+	border-bottom-color: var(--cic-line);
+	color: var(--cic-on-accent);
+}
+
+.formbutton-danger {
+	background: var(--cic-bad-deep);
+	border-color: var(--cic-line);
+	border-bottom-color: var(--cic-line);
+	color: #fff;
+	transition: all var(--cic-move) ease;
+}
+
+.formbutton-danger:hover,
+.formbutton-danger.active {
+	background: var(--cic-bad);
+	border-bottom-color: var(--cic-line);
+	color: #fff;
+}
+
+.btn-group-justified .btn {
+	border-right-color: var(--cic-line);
+}
+
+/* ==========================================================================
+   10. Bootstrap surfaces: panels, modals, dropdowns, alerts
+   ========================================================================== */
+
+.panel {
+	background-color: var(--cic-surface);
+	border-color: var(--cic-line);
+	box-shadow: none;
+}
+
+.panel-default,
+.panel-primary,
+.panel-info,
+.panel-success,
+.panel-warning,
+.panel-danger {
+	border-color: var(--cic-line);
+}
+
+.panel-heading,
+.panel-default > .panel-heading,
+.panel-primary > .panel-heading,
+.panel-info > .panel-heading {
+	background-color: var(--cic-head) !important;
+	border-bottom-color: var(--cic-line);
+	color: var(--cic-accent-text);
+}
+
+.panel-body {
+	background-color: var(--cic-head);
+}
+
+.panel-footer {
+	background-color: var(--cic-head);
+	border-top-color: var(--cic-line);
+}
+
+.panel-title {
+	color: inherit;
+}
+
+.well {
+	background-color: var(--cic-head);
+	border-color: var(--cic-line);
+	box-shadow: none;
+}
+
+.jumbotron {
+	background-color: var(--cic-head);
+	color: var(--cic-text);
+}
+
+.modal-content {
+	background-color: var(--cic-overlay);
+	border: 1px solid var(--cic-line);
+	box-shadow: 0 5px 15px rgba(5, 5, 5, .8);
+}
+
+.modal-header {
+	border-bottom-color: var(--cic-line);
+}
+
+.modal-footer {
+	border-top-color: var(--cic-line);
+}
+
+.modal-backdrop,
+.modal-backdrop.in {
+	background-color: #000;
+	opacity: .7;
+}
+
+.modal-title {
+	color: var(--cic-text-loud);
+}
+
+.close {
+	color: var(--cic-text);
+	text-shadow: 0 1px 0 #000;
+	opacity: .8;
+}
+
+.close:hover,
+.close:focus {
+	color: var(--cic-accent-text);
+	opacity: 1;
+}
+
+.dropdown-menu {
+	background-color: var(--cic-raised);
+	border-color: var(--cic-line);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, .6);
+}
+
+.dropdown-menu > li > a {
+	color: var(--cic-text);
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+	background-color: var(--cic-hover);
+	color: var(--cic-accent-text);
+}
+
+.dropdown-menu > .active > a,
+.dropdown-menu > .active > a:hover,
+.dropdown-menu > .active > a:focus {
+	background-color: var(--cic-accent);
+	color: var(--cic-on-accent);
+}
+
+.dropdown-menu .divider {
+	background-color: var(--cic-line);
+}
+
+.dropdown-header {
+	color: var(--cic-text-dim);
+}
+
+/* a.list-group-item beats .list-group-item on specificity, so Bootstrap's
+   #555 would survive a rule written for the class alone. */
+.list-group-item,
+a.list-group-item,
+button.list-group-item {
+	background-color: var(--cic-surface);
+	border-color: var(--cic-line);
+	color: var(--cic-text);
+}
+
+.list-group-item.active,
+.list-group-item.active:hover {
+	background-color: var(--cic-accent);
+	border-color: var(--cic-accent-deep);
+	color: var(--cic-on-accent);
+}
+
+/* Alerts. Cicada keeps one dark ground and separates them by border. */
+.alert {
+	background-color: var(--cic-head);
+	border-color: var(--cic-line);
+	color: var(--cic-text);
+	border-radius: 3px;
+}
+
+.alert-success {
+	background-color: var(--cic-head);
+	border-color: var(--cic-ok);
+	color: var(--cic-text);
+}
+
+.alert-info,
+.alert-notification {
+	background-color: var(--cic-head);
+	border-color: var(--cic-line);
+	color: var(--cic-text);
+}
+
+.alert-warning {
+	background-color: var(--cic-head);
+	border-color: var(--cic-warn);
+	color: var(--cic-text-loud);
+}
+
+.alert-danger {
+	background-color: var(--cic-head);
+	border-color: var(--cic-bad-deep);
+	color: var(--cic-text) !important;
+}
+
+.alert-notification a,
+.alert a {
+	color: var(--cic-accent-text);
+	transition: color var(--cic-move) ease;
+}
+
+.alert-notification a:hover,
+.alert a:hover {
+	color: var(--cic-accent-text);
+	text-decoration: underline;
+}
+
+.alert .close {
+	color: var(--cic-text);
+}
+
+/* Labels and badges */
+/* .label sets color:#fff on the base class, so the bright fills need to
+   state their own label colour or white survives at 3.2:1. */
+.label-default { background-color: var(--cic-line-loud); color: #fff; }
+.label-primary { background-color: var(--cic-accent); color: var(--cic-on-accent); }
+.label-success { background-color: var(--cic-ok-deep); color: #fff; }
+.label-info    { background-color: var(--cic-raised); border: 1px solid var(--cic-line); color: var(--cic-text); }
+.label-warning { background-color: var(--cic-warn); color: var(--cic-on-accent); }
+.label-danger  { background-color: var(--cic-bad); color: #fff; }
+
+.badge {
+	background-color: var(--cic-line-loud);
+	color: #fff;
+}
+
+/* Progress bars. ispconfig.css hard-codes a #ababab track. */
+.progress {
+	background-color: var(--cic-line-soft);
+	box-shadow: inset 0 1px 2px 1px #262626;
+}
+
+.progress-bar {
+	background-color: var(--cic-accent);
+	box-shadow: none;
+}
+
+.progress-bar-success { background-color: var(--cic-ok); }
+.progress-bar-warning { background-color: var(--cic-warn); }
+.progress-bar-danger  { background-color: var(--cic-bad); }
+
+.progress span {
+	color: #fff;
+	text-shadow: 0 1px 2px rgba(0, 0, 0, .8);
+}
+
+/* Pagination */
+.pagination > li > a,
+.pagination > li > span {
+	background-color: var(--cic-surface);
+	border-color: var(--cic-line);
+	color: var(--cic-text);
+}
+
+.pagination > li > a:hover,
+.pagination > li > span:hover {
+	background-color: var(--cic-hover);
+	border-color: var(--cic-line-loud);
+	color: var(--cic-accent-text);
+}
+
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover {
+	background-color: var(--cic-accent);
+	border-color: var(--cic-accent-deep);
+	color: var(--cic-on-accent);
+}
+
+.pagination > .disabled > span,
+.pagination > .disabled > a {
+	background-color: var(--cic-head);
+	border-color: var(--cic-line);
+	color: var(--cic-text-dim);
+}
+
+/* Tooltips and popovers */
+.tooltip-inner {
+	background-color: #000;
+	color: #fff;
+}
+
+.tooltip.top .tooltip-arrow     { border-top-color: #000; }
+.tooltip.bottom .tooltip-arrow  { border-bottom-color: #000; }
+.tooltip.left .tooltip-arrow    { border-left-color: #000; }
+.tooltip.right .tooltip-arrow   { border-right-color: #000; }
+
+.popover {
+	background-color: var(--cic-raised);
+	border-color: var(--cic-line);
+	color: var(--cic-text);
+	box-shadow: 0 3px 8px rgba(0, 0, 0, .7);
+}
+
+.popover-title {
+	background-color: var(--cic-head);
+	border-bottom-color: var(--cic-line);
+	color: var(--cic-text-loud);
+}
+
+.popover.top > .arrow    { border-top-color: var(--cic-line); }
+.popover.bottom > .arrow { border-bottom-color: var(--cic-line); }
+.popover.left > .arrow   { border-left-color: var(--cic-line); }
+.popover.right > .arrow  { border-right-color: var(--cic-line); }
+
+.popover.top > .arrow:after    { border-top-color: var(--cic-raised); }
+.popover.bottom > .arrow:after { border-bottom-color: var(--cic-raised); }
+.popover.left > .arrow:after   { border-left-color: var(--cic-raised); }
+.popover.right > .arrow:after  { border-right-color: var(--cic-raised); }
+
+/* Loading overlay. Background image kept, only the ground is repainted. */
+#ajaxloader {
+	background-color: var(--cic-head);
+	border-color: var(--cic-line);
+	color: var(--cic-text);
+}
+
+/* ==========================================================================
+   10b. Context states
+   Bootstrap paints these in pale pastels. Cicada itself only reworked
+   .success and left Bootstrap's #d9edf7 / #fcf8e3 standing for .info and
+   .warning, so there is no original to copy here. ISPConfig marks inactive
+   records with tr.danger, which puts a pastel row on every list page -
+   these become a tinted ground on the dark surface instead.
+   ========================================================================== */
+
+.table > thead > tr > td.success, .table > thead > tr > th.success,
+.table > thead > tr.success > td, .table > thead > tr.success > th,
+.table > tbody > tr > td.success, .table > tbody > tr > th.success,
+.table > tbody > tr.success > td, .table > tbody > tr.success > th,
+.table > tfoot > tr > td.success, .table > tfoot > tr > th.success,
+.table > tfoot > tr.success > td, .table > tfoot > tr.success > th {
+	background-color: rgba(70, 165, 12, .16);
+}
+
+.table > thead > tr > td.info, .table > thead > tr > th.info,
+.table > thead > tr.info > td, .table > thead > tr.info > th,
+.table > tbody > tr > td.info, .table > tbody > tr > th.info,
+.table > tbody > tr.info > td, .table > tbody > tr.info > th,
+.table > tfoot > tr > td.info, .table > tfoot > tr > th.info,
+.table > tfoot > tr.info > td, .table > tfoot > tr.info > th {
+	background-color: rgba(70, 165, 12, .09);
+}
+
+.table > thead > tr > td.warning, .table > thead > tr > th.warning,
+.table > thead > tr.warning > td, .table > thead > tr.warning > th,
+.table > tbody > tr > td.warning, .table > tbody > tr > th.warning,
+.table > tbody > tr.warning > td, .table > tbody > tr.warning > th,
+.table > tfoot > tr > td.warning, .table > tfoot > tr > th.warning,
+.table > tfoot > tr.warning > td, .table > tfoot > tr.warning > th {
+	background-color: rgba(222, 115, 19, .18);
+}
+
+.table > thead > tr > td.danger, .table > thead > tr > th.danger,
+.table > thead > tr.danger > td, .table > thead > tr.danger > th,
+.table > tbody > tr > td.danger, .table > tbody > tr > th.danger,
+.table > tbody > tr.danger > td, .table > tbody > tr.danger > th,
+.table > tfoot > tr > td.danger, .table > tfoot > tr > th.danger,
+.table > tfoot > tr.danger > td, .table > tfoot > tr.danger > th {
+	background-color: rgba(219, 72, 41, .17);
+}
+
+.table-hover > tbody > tr > td.success:hover,
+.table-hover > tbody > tr > th.success:hover,
+.table-hover > tbody > tr.success:hover > td,
+.table-hover > tbody > tr:hover > .success,
+.table-hover > tbody > tr.success:hover > th {
+	background-color: rgba(70, 165, 12, .26);
+}
+
+.table-hover > tbody > tr > td.info:hover,
+.table-hover > tbody > tr > th.info:hover,
+.table-hover > tbody > tr.info:hover > td,
+.table-hover > tbody > tr:hover > .info,
+.table-hover > tbody > tr.info:hover > th {
+	background-color: rgba(70, 165, 12, .16);
+}
+
+.table-hover > tbody > tr > td.warning:hover,
+.table-hover > tbody > tr > th.warning:hover,
+.table-hover > tbody > tr.warning:hover > td,
+.table-hover > tbody > tr:hover > .warning,
+.table-hover > tbody > tr.warning:hover > th {
+	background-color: rgba(222, 115, 19, .28);
+}
+
+.table-hover > tbody > tr > td.danger:hover,
+.table-hover > tbody > tr > th.danger:hover,
+.table-hover > tbody > tr.danger:hover > td,
+.table-hover > tbody > tr:hover > .danger,
+.table-hover > tbody > tr.danger:hover > th {
+	background-color: rgba(219, 72, 41, .27);
+}
+
+.table-hover > tbody > tr > td.active:hover,
+.table-hover > tbody > tr > th.active:hover,
+.table-hover > tbody > tr.active:hover > td,
+.table-hover > tbody > tr:hover > .active,
+.table-hover > tbody > tr.active:hover > th {
+	background-color: var(--cic-line-soft);
+}
+
+.table-striped > tbody > tr:nth-child(odd) {
+	background-color: var(--cic-head);
+}
+
+.table-hover > tbody > tr:hover {
+	background-color: var(--cic-hover);
+}
+
+.table td,
+.table th,
+.table .table {
+	background-color: transparent;
+}
+
+/* Contextual background helpers */
+.bg-primary { background-color: var(--cic-accent); color: #fff; }
+.bg-success { background-color: rgba(70, 165, 12, .16); }
+.bg-info    { background-color: rgba(70, 165, 12, .09); }
+.bg-warning { background-color: rgba(222, 115, 19, .18); }
+.bg-danger  { background-color: rgba(219, 72, 41, .17); }
+
+a.bg-success:hover { background-color: rgba(70, 165, 12, .26); }
+a.bg-info:hover    { background-color: rgba(70, 165, 12, .16); }
+a.bg-warning:hover { background-color: rgba(222, 115, 19, .28); }
+a.bg-danger:hover  { background-color: rgba(219, 72, 41, .27); }
+
+mark,
+.mark {
+	background-color: rgba(222, 115, 19, .35);
+	color: var(--cic-text-loud);
+}
+
+/* Panel variants */
+.panel-success > .panel-heading {
+	background-color: rgba(70, 165, 12, .16) !important;
+	border-color: var(--cic-ok);
+	color: var(--cic-text-loud);
+}
+
+.panel-warning > .panel-heading {
+	background-color: rgba(222, 115, 19, .18) !important;
+	border-color: var(--cic-warn);
+	color: var(--cic-text-loud);
+}
+
+.panel-danger > .panel-heading {
+	background-color: rgba(219, 72, 41, .17) !important;
+	border-color: var(--cic-bad-deep);
+	color: var(--cic-text-loud);
+}
+
+/* List group variants */
+.list-group-item-success, a.list-group-item-success { background-color: rgba(70, 165, 12, .16); color: var(--cic-text); }
+.list-group-item-info,    a.list-group-item-info    { background-color: rgba(70, 165, 12, .09); color: var(--cic-text); }
+.list-group-item-warning, a.list-group-item-warning { background-color: rgba(222, 115, 19, .18); color: var(--cic-text); }
+.list-group-item-danger,  a.list-group-item-danger  { background-color: rgba(219, 72, 41, .17); color: var(--cic-text); }
+
+a.list-group-item-success:hover, a.list-group-item-success:focus { background-color: rgba(70, 165, 12, .26); }
+a.list-group-item-info:hover,    a.list-group-item-info:focus    { background-color: rgba(70, 165, 12, .16); }
+a.list-group-item-warning:hover, a.list-group-item-warning:focus { background-color: rgba(222, 115, 19, .28); }
+a.list-group-item-danger:hover,  a.list-group-item-danger:focus  { background-color: rgba(219, 72, 41, .27); }
+
+a.list-group-item:hover,
+a.list-group-item:focus {
+	background-color: var(--cic-hover);
+	color: var(--cic-accent-text);
+}
+
+.list-group-item.disabled,
+.list-group-item.disabled:hover,
+.list-group-item.disabled:focus {
+	background-color: var(--cic-head);
+	color: var(--cic-text-dim);
+}
+
+/* Disabled buttons keep their hue but lose the light fill */
+.btn-default.disabled, .btn-default[disabled], fieldset[disabled] .btn-default {
+	background-color: var(--cic-head);
+	border-color: var(--cic-line);
+	color: var(--cic-text-dim);
+}
+
+.btn-info.disabled, .btn-info[disabled], fieldset[disabled] .btn-info {
+	background-color: var(--cic-ok-deep);
+}
+
+.btn-warning.disabled, .btn-warning[disabled], fieldset[disabled] .btn-warning {
+	background-color: var(--cic-warn);
+}
+
+/* Validation add-ons */
+.has-success .input-group-addon {
+	background-color: rgba(70, 165, 12, .16);
+	border-color: var(--cic-ok);
+	color: var(--cic-text);
+}
+
+.has-warning .input-group-addon {
+	background-color: rgba(222, 115, 19, .18);
+	border-color: var(--cic-warn);
+	color: var(--cic-text);
+}
+
+.has-error .input-group-addon {
+	background-color: rgba(219, 72, 41, .17);
+	border-color: var(--cic-bad);
+	color: var(--cic-text);
+}
+
+/* Progress bar variants Bootstrap ships in its own palette */
+.progress-bar-info {
+	background-color: var(--cic-ok-deep);
+}
+
+.progress-striped .progress-bar,
+.progress-bar-striped,
+.progress-striped .progress-bar-success,
+.progress-striped .progress-bar-info,
+.progress-striped .progress-bar-warning,
+.progress-striped .progress-bar-danger {
+	background-image: linear-gradient(45deg,
+		rgba(255, 255, 255, .12) 25%, transparent 25%,
+		transparent 50%, rgba(255, 255, 255, .12) 50%,
+		rgba(255, 255, 255, .12) 75%, transparent 75%, transparent);
+}
+
+/* Remaining light surfaces */
+.pager li > a,
+.pager li > span {
+	background-color: var(--cic-surface);
+	border-color: var(--cic-line);
+	color: var(--cic-text);
+}
+
+.pager li > a:hover,
+.pager li > a:focus {
+	background-color: var(--cic-hover);
+	color: var(--cic-accent-text);
+}
+
+.pager .disabled > a,
+.pager .disabled > a:hover,
+.pager .disabled > a:focus,
+.pager .disabled > span {
+	background-color: var(--cic-head);
+	color: var(--cic-text-dim);
+}
+
+.breadcrumb {
+	background-color: var(--cic-head);
+}
+
+.thumbnail,
+.img-thumbnail {
+	background-color: var(--cic-head);
+	border-color: var(--cic-line);
+}
+
+.nav .nav-divider {
+	background-color: var(--cic-line);
+}
+
+.carousel-indicators .active {
+	background-color: var(--cic-accent);
+}
+
+/* Bootstrap's own navbar is unused by ISPConfig, covered so a module
+   template that reaches for it does not punch a light bar into the page. */
+.navbar-default {
+	background-color: var(--cic-head);
+	border-color: var(--cic-line);
+}
+
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus,
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:hover,
+.navbar-default .navbar-nav > .open > a:focus,
+.navbar-default .navbar-nav .open .dropdown-menu > .active > a {
+	background-color: var(--cic-hover);
+	color: var(--cic-accent-text);
+}
+
+.navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-toggle:focus {
+	background-color: var(--cic-hover);
+}
+
+/* ==========================================================================
+   11. select2 (v3)
+   ========================================================================== */
+
+.select2-container .select2-choice,
+.select2-container-multi .select2-choices {
+	background-color: var(--cic-surface);
+	background-image: none;
+	border-color: var(--cic-line);
+	color: var(--cic-text);
+	box-shadow: none;
+}
+
+.select2-container .select2-choice > .select2-chosen {
+	color: var(--cic-text);
+}
+
+.select2-container.select2-container-disabled .select2-choice {
+	background-color: var(--cic-head);
+	border-color: var(--cic-line);
+	color: var(--cic-text-dim);
+}
+
+.select2-container-active .select2-choice,
+.select2-container-active .select2-choices,
+.select2-container-multi.select2-container-active .select2-choices {
+	border-color: var(--cic-accent);
+	box-shadow: none;
+}
+
+/* Only the ground: the arrow itself is a sprite image. */
+.select2-container .select2-choice .select2-arrow {
+	background-color: var(--cic-head);
+	background-image: none;
+	border-left-color: var(--cic-line);
+}
+
+.select2-drop,
+.select2-drop.select2-drop-above {
+	background-color: var(--cic-raised);
+	border-color: var(--cic-line);
+	color: var(--cic-text);
+	box-shadow: 0 4px 10px rgba(0, 0, 0, .6);
+}
+
+.select2-search input {
+	background-color: var(--cic-surface);
+	border-color: var(--cic-line);
+	color: var(--cic-text);
+}
+
+.select2-results {
+	background-color: var(--cic-raised);
+	color: var(--cic-text);
+}
+
+.select2-results li {
+	background-color: transparent;
+}
+
+.select2-results .select2-result-label {
+	color: var(--cic-text);
+}
+
+.select2-results .select2-highlighted {
+	background-color: var(--cic-accent);
+	color: var(--cic-on-accent);
+}
+
+/* select2 sets the colour on the inner label, not on the highlighted row */
+.select2-results .select2-highlighted .select2-result-label {
+	color: var(--cic-on-accent);
+}
+
+.select2-results .select2-no-results,
+.select2-results .select2-searching,
+.select2-results .select2-selection-limit,
+.select2-results .select2-ajax-error {
+	background-color: var(--cic-head);
+	color: var(--cic-text-dim);
+}
+
+.select2-results .select2-disabled {
+	background-color: var(--cic-head);
+	color: var(--cic-text-dim);
+}
+
+.select2-container-multi .select2-choices .select2-search-choice {
+	background-color: var(--cic-hover);
+	background-image: none;
+	border-color: var(--cic-line);
+	color: var(--cic-text);
+	box-shadow: none;
+}
+
+.select2-container-multi .select2-choices .select2-search-field input {
+	background-color: transparent;
+	border: 0;
+	color: var(--cic-text);
+}
+
+.select2-container-multi .select2-choices .select2-search-choice-focus {
+	background-color: var(--cic-accent);
+	color: var(--cic-on-accent);
+}
+
+.select2-container-multi.select2-container-disabled .select2-choices,
+.select2-container-multi.select2-container-disabled .select2-choices .select2-search-choice,
+.select2-container.select2-container-disabled .select2-choice .select2-arrow {
+	background-color: var(--cic-head);
+	background-image: none;
+	border-color: var(--cic-line);
+	color: var(--cic-text-dim);
+}
+
+.select2-dropdown-open .select2-choice,
+.select2-container.select2-drop-above .select2-choice,
+.select2-dropdown-open.select2-drop-above .select2-choice,
+.select2-dropdown-open.select2-drop-above .select2-choices {
+	background-color: var(--cic-raised);
+	background-image: none;
+	border-color: var(--cic-accent);
+	box-shadow: none;
+}
+
+.select2-more-results,
+.select2-more-results.select2-active {
+	background-color: var(--cic-head);
+	background-image: none;
+	color: var(--cic-text-dim);
+}
+
+.select2-results .select2-disabled.select2-highlighted {
+	background-color: var(--cic-head);
+	color: var(--cic-text-dim);
+}
+
+.select2-results .select2-highlighted ul {
+	background-color: transparent;
+	color: var(--cic-on-accent);
+}
+
+/* Matched substring in a result row */
+.select2-results li em {
+	background-color: rgba(222, 115, 19, .35);
+	color: var(--cic-text-loud);
+	font-style: normal;
+}
+
+/* On the highlighted row the ground is already the accent, so the match
+   is marked by weight rather than by another fill. */
+.select2-results .select2-highlighted em {
+	background-color: transparent;
+	color: var(--cic-on-accent);
+	font-weight: 700;
+	text-decoration: underline;
+}
+
+.breadcrumb > .active {
+	color: var(--cic-text-dim);
+}
+
+/* The spinner is an image in the default theme; the path is relative to
+   this file, so it keeps working under a subdirectory install. */
+.select2-search input.select2-active,
+.select2-container-multi .select2-choices .select2-search-field input.select2-active {
+	background: var(--cic-surface)
+	            url('../../../default/assets/stylesheets/select2-spinner.gif')
+	            no-repeat 100%;
+}
+
+html[dir="rtl"] .select2-search input {
+	background: var(--cic-surface)
+	            url('../../../default/assets/stylesheets/select2.png')
+	            no-repeat -37px -22px;
+}
+
+.select2-drop-mask {
+	background-color: transparent;
+}
+
+/* select2 under Bootstrap's old control-group validation classes */
+.control-group.success .select2-container .select2-choice div { background-color: rgba(70, 165, 12, .16); }
+.control-group.info .select2-container .select2-choice div    { background-color: rgba(70, 165, 12, .09); }
+.control-group.warning .select2-container .select2-choice div { background-color: rgba(222, 115, 19, .18); }
+.control-group.error .select2-container .select2-choice div   { background-color: rgba(219, 72, 41, .17); }
+
+/* ==========================================================================
+   12. Date and time picker
+   ========================================================================== */
+
+.datetimepicker {
+	background-color: var(--cic-raised);
+	border-color: var(--cic-line);
+	color: var(--cic-text);
+	box-shadow: 0 4px 10px rgba(0, 0, 0, .6);
+}
+
+.datetimepicker table tr td,
+.datetimepicker table tr th {
+	color: var(--cic-text);
+}
+
+.datetimepicker table tr td:hover,
+.datetimepicker table tr th:hover,
+.datetimepicker table tr td span:hover {
+	background-color: var(--cic-hover);
+	color: var(--cic-accent-text);
+}
+
+.datetimepicker table tr td.old,
+.datetimepicker table tr td.new,
+.datetimepicker table tr td span.old,
+.datetimepicker table tr td span.new {
+	color: var(--cic-text-dim);
+}
+
+/* bootstrap-datetimepicker repeats the class in its selectors
+   (td.active.active, td.today.disabled:hover) purely to raise specificity,
+   and paints with gradients rather than flat colours. A rule written as
+   `td.active` loses to `td.active.active` and leaves the blue gradient
+   standing, so the repetition has to be matched and background-image has
+   to be cleared explicitly. */
+.datetimepicker table tr td.today,
+.datetimepicker table tr td.today:hover,
+.datetimepicker table tr td.today.disabled,
+.datetimepicker table tr td.today.disabled:hover,
+.datetimepicker table tr td.today.active,
+.datetimepicker table tr td.today:hover.active {
+	background-color: var(--cic-head);
+	background-image: none;
+	border-color: var(--cic-accent);
+	color: var(--cic-accent-text);
+}
+
+.datetimepicker table tr td.active,
+.datetimepicker table tr td.active:hover,
+.datetimepicker table tr td.active.active,
+.datetimepicker table tr td.active:hover.active,
+.datetimepicker table tr td.active.disabled,
+.datetimepicker table tr td.active.disabled:hover,
+.datetimepicker table tr td.active.disabled.active,
+.datetimepicker table tr td span.active,
+.datetimepicker table tr td span.active:hover,
+.datetimepicker table tr td span.active.active,
+.datetimepicker table tr td span.active.disabled {
+	background-color: var(--cic-accent);
+	background-image: none;
+	border-color: var(--cic-accent-deep);
+	color: var(--cic-on-accent);
+	text-shadow: none;
+}
+
+/* The dropdown arrow is drawn with borders, white on the underside */
+[class*=" datetimepicker-dropdown"]:before {
+	border-bottom-color: var(--cic-line);
+}
+
+[class*=" datetimepicker-dropdown"]:after {
+	border-bottom-color: var(--cic-raised);
+}
+
+[class*=" datetimepicker-dropdown-top"]:before {
+	border-top-color: var(--cic-line);
+}
+
+[class*=" datetimepicker-dropdown-top"]:after {
+	border-top-color: var(--cic-raised);
+}
+
+.datetimepicker table tr td.disabled,
+.datetimepicker table tr td.disabled:hover {
+	background: none;
+	color: var(--cic-text-dim);
+}
+
+.datetimepicker table tr td.day:hover,
+.datetimepicker .datetimepicker-days th.picker-switch:hover,
+.datetimepicker th.prev:hover,
+.datetimepicker th.next:hover,
+.datetimepicker th.switch:hover,
+.datetimepicker thead tr:first-child th:hover,
+.datetimepicker tfoot tr:first-child th:hover,
+.datetimepicker table tr td.hour:hover,
+.datetimepicker table tr td.minute:hover,
+.datetimepicker table tr td.second:hover {
+	background: var(--cic-hover);
+	color: var(--cic-accent-text);
+}
+
+/* ==========================================================================
+   13. Search suggestions
+   ispconfig.css hard-codes #fff and #f2f5f7 on these two overlays.
+   ========================================================================== */
+
+ul.df-resultbox,
+ul.gs-resultbox {
+	background: var(--cic-raised);
+	border: 1px solid var(--cic-line);
+	color: var(--cic-text);
+	box-shadow: 0 4px 10px rgba(0, 0, 0, .6);
+}
+
+ul.df-resultbox li:nth-child(even),
+ul.gs-resultbox li:nth-child(even) {
+	background: var(--cic-hover);
+}
+
+ul.df-resultbox li:hover,
+ul.gs-resultbox li:hover {
+	background: var(--cic-accent);
+	color: var(--cic-on-accent);
+}
+
+ul.df-resultbox li.df-cheader,
+ul.gs-resultbox li.gs-cheader {
+	background: var(--cic-head);
+	color: var(--cic-accent-text);
+}
+
+ul.df-resultbox li.df-cheader:hover,
+ul.gs-resultbox li.gs-cheader:hover {
+	background: var(--cic-head);
+	color: var(--cic-accent-text);
+}
+
+/* ==========================================================================
+   14. Off-canvas menu (pushy)
+   pushy.css ships #333332 and a bright blue hover.
+   ========================================================================== */
+
+.pushy {
+	background: var(--cic-head);
+	box-shadow: inset -10px 0 6px -9px rgba(0, 0, 0, .9);
+}
+
+.pushy a {
+	color: var(--cic-text);
+	border-bottom-color: rgba(0, 0, 0, .3);
+	border-top-color: rgba(255, 255, 255, .04);
+	transition: color var(--cic-move) ease, background var(--cic-move) ease;
+}
+
+.pushy a:hover,
+.pushy a.active {
+	background: var(--cic-hover);
+	color: var(--cic-accent-text);
+}
+
+.pushy ul.subnavi li a:hover {
+	background: none;
+	color: var(--cic-accent-text);
+}
+
+.pushy-active .site-overlay {
+	background: rgba(0, 0, 0, .6);
+}
+
+/* ==========================================================================
+   15. Login page
+   ========================================================================== */
+
+body.login,
+#content .panel-login {
+	background: var(--cic-page);
+}
+
+#pageForm .panel {
+	background-color: var(--cic-surface);
+}
+
+/* ==========================================================================
+   16. Odds and ends carrying literal colours
+   ========================================================================== */
+
+/* Config diff view */
+.finediff ins {
+	background: rgba(70, 165, 12, .13);
+	color: var(--cic-ok-text);
+}
+
+.finediff del {
+	background: rgba(219, 72, 41, .13);
+	color: var(--cic-bad-text);
+}
+
+#apache_directives,
+#nginx_directives,
+#proxy_directives {
+	background-color: var(--cic-sunken);
+	color: var(--cic-text);
+	border-color: var(--cic-line);
+}
+
+.copy-to-clipboard-icon::after {
+	color: var(--cic-accent-text);
+}
+
+.jail-symbol {
+	color: var(--cic-text-dim);
+}
+
+.systemmonitor-state .online {
+	color: var(--cic-ok);
+}
+
+.systemmonitor-state .offline {
+	color: var(--cic-bad-text);
+}
+
+/* Quota tables: quota_lib.inc.php writes the text colour inline, and its
+   normal state is #000000. Only that value is overridden - the warning
+   (#fd934f) and critical (#cc0000) colours still read on dark. */
+td[style*="#000000"],
+span[style*="#000000"],
+[style*="color:#000000"],
+[style*="color: #000000"] {
+	color: var(--cic-text) !important;
+}
+
+/* ==========================================================================
+   17. Scrollbars
+   ========================================================================== */
+
+* {
+	scrollbar-color: var(--cic-line-soft) var(--cic-page);
+	scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+	width: 11px;
+	height: 11px;
+}
+
+::-webkit-scrollbar-track {
+	background: var(--cic-page);
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--cic-line-soft);
+	border: 2px solid var(--cic-page);
+	border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: var(--cic-line-loud);
+}
+
+/* ==========================================================================
+   18. Reduced motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: .01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: .01ms !important;
+	}
+}

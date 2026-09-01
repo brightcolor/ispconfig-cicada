@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Cicada für ISPConfig — Prüfseite</title>
+<meta name="viewport" content="width=device-width, user-scalable=yes">
+
+<!-- Same order as themes/cicada/templates/main.tpl.htm -->
+<link rel="stylesheet" href="themes/default/assets/stylesheets/bootstrap.min.css">
+<link rel="stylesheet" href="themes/default/assets/stylesheets/fonts.min.css">
+<link rel="stylesheet" href="themes/default/assets/stylesheets/ispconfig.css">
+<link rel="stylesheet" href="themes/default/assets/stylesheets/pushy.min.css">
+<link rel="stylesheet" href="themes/default/assets/stylesheets/bootstrap-datetimepicker.min.css">
+<link rel="stylesheet" href="themes/default/assets/stylesheets/responsive.min.css">
+<link rel="stylesheet" href="themes/default/assets/stylesheets/select2.css">
+<link rel="stylesheet" href="themes/default/assets/stylesheets/select2-bootstrap.css">
+<link rel="stylesheet" href="themes/default/assets/stylesheets/font-awesome-4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="themes/default/assets/stylesheets/bootstrap-icons.min.css">
+<link rel="stylesheet" href="themes/cicada/assets/stylesheets/cicada.css">
+
+<style>
+	/* Preview scaffolding only — never part of the theme. */
+	.pv-section { margin: 40px 0; }
+	.pv-section > h2 {
+		font-size: 13px; text-transform: uppercase; letter-spacing: .12em;
+		opacity: .5; margin: 0 0 12px; padding-bottom: 6px;
+		border-bottom: 1px dashed currentColor;
+	}
+	.pv-row > * { margin: 0 6px 8px 0; }
+	.pv-swatch { display: inline-block; width: 92px; margin: 0 8px 8px 0; font-size: 11px; text-align: center; }
+	.pv-swatch i { display: block; height: 44px; border: 1px solid rgba(128,128,128,.4); border-radius: 3px; margin-bottom: 4px; }
+</style>
+</head>
+
+<body>
+<nav class="pushy pushy-left">
+	<ul>
+		<li><a href="#">Website</a></li>
+		<li><a href="#" class="active">E-Mail</a></li>
+		<li><a href="#">DNS</a></li>
+		<li class="subnavi"><ul class="subnavi"><li><a href="#" class="subnav-header">Domains</a></li><li><a href="#">Postfächer</a></li></ul></li>
+	</ul>
+</nav>
+<div class="site-overlay"></div>
+
+<div id="container">
+<div id="main-wrapper">
+<div id="inner-wrapper">
+
+	<!-- ===== Header ===== -->
+	<div class="clear">
+		<div class="left clear">
+			<div class="menu-btn left">&#9776;</div>
+			<div id="logo" style="background: url('data:image/svg+xml;utf8,&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;200&quot; height=&quot;65&quot;&gt;&lt;text x=&quot;0&quot; y=&quot;44&quot; font-family=&quot;Helvetica,Arial&quot; font-size=&quot;34&quot; font-weight=&quot;bold&quot; fill=&quot;%23333&quot;&gt;ISPConfig&lt;/text&gt;&lt;/svg&gt;') no-repeat; width:200px; height:65px"><a href="#"></a></div>
+		</div>
+		<div id="headerbar" class="clear">
+			<button type="button" id="logout-button" class="btn btn-sm btn-danger text-uppercase">Abmelden admin</button>
+			<form action="#" method="get" id="searchform" role="form">
+				<div><div><div class="input-group">
+					<input id="globalsearch" type="text" class="form-control" placeholder="Suchen">
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="button"><span class="icon icon-lens"></span></button>
+					</span>
+				</div></div></div>
+			</form>
+		</div>
+		<div class="notification"><span class="notification_text">7</span></div>
+	</div>
+
+	<!-- ===== Main navigation ===== -->
+	<div id="topnav-container">
+		<nav id="main-navigation" class="btn-group btn-group-justified">
+			<a href="#" class="btn btn-default active"><div class="icon icon-sites"></div><div class="title">Websites</div></a>
+			<a href="#" class="btn btn-default"><div class="icon icon-mail"></div><div class="title">E-Mail</div></a>
+			<a href="#" class="btn btn-default"><div class="icon icon-dns"></div><div class="title">DNS</div></a>
+			<a href="#" class="btn btn-default"><div class="icon icon-tools"></div><div class="title">Werkzeuge</div></a>
+			<a href="#" class="btn btn-default"><div class="icon icon-admin"></div><div class="title">System</div></a>
+		</nav>
+	</div>
+
+	<div class="clear">
+	<div id="content" class="right">
+
+	<!-- ===== Palette ===== -->
+	<div class="pv-section">
+		<h2>Palette</h2>
+		<div class="pv-row">
+			<span class="pv-swatch"><i style="background:var(--cic-page)"></i>page</span>
+			<span class="pv-swatch"><i style="background:var(--cic-head)"></i>head</span>
+			<span class="pv-swatch"><i style="background:var(--cic-surface)"></i>surface</span>
+			<span class="pv-swatch"><i style="background:var(--cic-raised)"></i>raised</span>
+			<span class="pv-swatch"><i style="background:var(--cic-hover)"></i>hover</span>
+			<span class="pv-swatch"><i style="background:var(--cic-overlay)"></i>overlay</span>
+			<span class="pv-swatch"><i style="background:var(--cic-accent)"></i>accent</span>
+			<span class="pv-swatch"><i style="background:var(--cic-accent-text)"></i>accent text</span>
+			<span class="pv-swatch"><i style="background:var(--cic-ok)"></i>ok</span>
+			<span class="pv-swatch"><i style="background:var(--cic-warn)"></i>warn</span>
+			<span class="pv-swatch"><i style="background:var(--cic-bad)"></i>bad</span>
+		</div>
+	</div>
+
+	<!-- ===== Module tiles ===== -->
+	<div class="pv-section">
+		<h2>Modulkacheln (Startseite)</h2>
+		<h2 style="font-size:24px;text-transform:none;letter-spacing:0;opacity:1;border:0">Verfügbare Module</h2>
+		<ul class="modules clear">
+			<li>
+				<div class="clear"><div class="icon icon-sites"></div><div class="left"><div class="title">Websites</div></div></div>
+				<a href="#" class="btn btn-default button">Zu Websites</a>
+			</li>
+			<li>
+				<div class="clear"><div class="icon icon-mail"></div><div class="left"><div class="title">E-Mail</div></div></div>
+				<a href="#" class="btn btn-default button">Zu E-Mail</a>
+			</li>
+			<li>
+				<div class="clear"><div class="icon icon-dns"></div><div class="left"><div class="title">DNS</div></div></div>
+				<a href="#" class="btn btn-default button">Zu DNS</a>
+			</li>
+		</ul>
+	</div>
+
+	<!-- ===== Alerts ===== -->
+	<div class="pv-section">
+		<h2>Meldungen</h2>
+		<div class="alert alert-notification">Die Änderungen wurden gespeichert. <a href="#">Zur Übersicht</a></div>
+		<div class="alert alert-success">Die Website wurde angelegt.</div>
+		<div class="alert alert-warning">Das Zertifikat läuft in 9 Tagen ab.</div>
+		<div class="alert alert-danger clear">
+			<div class="alert-label"><strong>Fehler</strong></div>
+			<div class="alert-content"><ul style="list-style-type:none"><li>Der Domainname ist bereits vergeben.</li></ul></div>
+		</div>
+	</div>
+
+	<!-- ===== List page ===== -->
+	<div class="pv-section">
+		<h2>Listenansicht</h2>
+		<div class="page-header"><h1>Websites</h1></div>
+		<p>Hier verwalten Sie die Websites auf Ihren Servern.</p>
+		<button class="btn btn-default formbutton-success" type="button">Neue Website hinzufügen</button>
+
+		<div class="table-wrapper marginTop15">
+		<table class="table">
+			<thead class="dark form-group-sm">
+				<tr>
+					<th class="small-col" data-column="domain_id">ID</th>
+					<th class="tiny-col" data-column="active">Aktiv</th>
+					<th data-column="server_id" data-ordered="asc">Server</th>
+					<th data-column="domain">Domain</th>
+					<th class="small-col text-right">
+						<select class="form-control"><option>15</option><option>50</option></select>
+					</th>
+				</tr>
+				<tr>
+					<td><input class="form-control" type="text" name="search_domain_id"></td>
+					<td><select class="form-control active-switch"><option>Alle</option><option>Ja</option></select></td>
+					<td><select class="form-control"><option>web-01.example.net</option></select></td>
+					<td><input class="form-control" type="text" name="search_domain" value="example"></td>
+					<td class="text-right">
+						<button type="button" class="btn btn-default formbutton-default formbutton-narrow"><span class="icon icon-filter"></span></button>
+					</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><a href="#">1042</a></td>
+					<td><a href="#"><span class="label label-success">Ja</span></a></td>
+					<td><a href="#">web-01.example.net</a></td>
+					<td><a href="#">example.com</a></td>
+					<td class="text-right">
+						<a href="#" class="btn btn-default formbutton-default formbutton-narrow"><span class="icon icon-link"></span></a>
+						<a href="#" class="btn btn-default formbutton-default formbutton-narrow"><span class="glyphicon glyphicon-signal"></span></a>
+						<a href="#" class="btn btn-default formbutton-danger formbutton-narrow"><span class="icon icon-delete"></span></a>
+					</td>
+				</tr>
+				<tr>
+					<td><a href="#">1043</a></td>
+					<td><a href="#"><span class="label label-success">Ja</span></a></td>
+					<td><a href="#">web-01.example.net</a></td>
+					<td><a href="#">shop.example.com</a></td>
+					<td class="text-right">
+						<a href="#" class="btn btn-default formbutton-default formbutton-narrow"><span class="icon icon-link"></span></a>
+						<a href="#" class="btn btn-default formbutton-default formbutton-narrow"><span class="glyphicon glyphicon-signal"></span></a>
+						<a href="#" class="btn btn-default formbutton-danger formbutton-narrow"><span class="icon icon-delete"></span></a>
+					</td>
+				</tr>
+				<tr class="danger">
+					<td><a href="#">1044</a></td>
+					<td><a href="#"><span class="label label-danger">Nein</span></a></td>
+					<td><a href="#">web-02.example.net</a></td>
+					<td><a href="#">alt.example.org</a></td>
+					<td class="text-right">
+						<a href="#" class="btn btn-default formbutton-default formbutton-narrow"><span class="icon icon-link"></span></a>
+						<a href="#" class="btn btn-default formbutton-default formbutton-narrow"><span class="glyphicon glyphicon-signal"></span></a>
+						<a href="#" class="btn btn-default formbutton-danger formbutton-narrow"><span class="icon icon-delete"></span></a>
+					</td>
+				</tr>
+				<tr class="tbl_row_noresults"><td colspan="5">Keine Einträge gefunden.</td></tr>
+			</tbody>
+			<tfoot>
+				<tr><td colspan="5">
+					<ul class="pagination">
+						<li class="disabled"><span>&laquo;</span></li>
+						<li class="active"><a href="#">1</a></li>
+						<li><a href="#">2</a></li>
+						<li><a href="#">3</a></li>
+						<li><a href="#">&raquo;</a></li>
+					</ul>
+				</td></tr>
+			</tfoot>
+		</table>
+		</div>
+		<div class="tfooter"></div>
+	</div>
+
+	<!-- ===== Tabbed form ===== -->
+	<div class="pv-section">
+		<h2>Formular mit Reitern</h2>
+		<div class="content-tab-wrapper">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#">Domain</a></li>
+				<li><a href="#">Umleitung</a></li>
+				<li><a href="#">SSL</a></li>
+				<li><a href="#">Statistik</a></li>
+				<li><a href="#">Backup</a></li>
+			</ul>
+			<div id="tabbox_content" class="tab-content">
+			<div class="tab-pane active fade in">
+				<div class="form-horizontal" role="form">
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Server</label>
+						<div class="col-sm-9"><select class="form-control"><option>web-01.example.net</option><option>web-02.example.net</option></select></div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Domain</label>
+						<div class="col-sm-9"><input type="text" class="form-control" value="example.com"></div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Fokus-Zustand</label>
+						<div class="col-sm-9"><input type="text" class="form-control" value="hier klicken" autofocus></div>
+					</div>
+					<div class="form-group has-error">
+						<label class="col-sm-3 control-label">Fehlerhaftes Feld</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" value="ungültig">
+							<span class="help-block">Der Wert enthält unerlaubte Zeichen.</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Gesperrtes Feld</label>
+						<div class="col-sm-9"><input type="text" class="form-control" value="nicht änderbar" disabled></div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Datum</label>
+						<div class="col-sm-9"><div class="input-group">
+							<input type="text" class="form-control" value="01.09.2026">
+							<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+						</div></div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Speicherplatz</label>
+						<div class="col-sm-9"><div class="input-group">
+							<input type="text" class="form-control" value="5000">
+							<span class="input-group-addon">MB</span>
+						</div></div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Beschreibung</label>
+						<div class="col-sm-9"><textarea class="form-control" rows="3">Kundenwebsite, Vertrag 2026-114</textarea></div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Aktiv</label>
+						<div class="col-sm-9">
+							<label class="checkbox-inline"><input type="checkbox" checked> Ja</label>
+							<label class="radio-inline"><input type="radio" name="pv-r" checked> Apache</label>
+							<label class="radio-inline"><input type="radio" name="pv-r"> nginx</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">PHP-Direktiven</label>
+						<div class="col-sm-9"><textarea id="apache_directives" class="form-control" rows="3">php_admin_value open_basedir /var/www/example.com</textarea></div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-9 col-sm-offset-3">
+							<button class="btn btn-default formbutton-success" type="button">Speichern</button>
+							<button class="btn btn-default formbutton-default" type="button">Abbrechen</button>
+							<button class="btn btn-default formbutton-danger" type="button">Löschen</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- ===== Buttons, labels, badges ===== -->
+	<div class="pv-section">
+		<h2>Schaltflächen und Marken</h2>
+		<p class="pv-row">
+			<button class="btn btn-default">Standard</button>
+			<button class="btn btn-primary">Primär</button>
+			<button class="btn btn-success">Erfolg</button>
+			<button class="btn btn-info">Info</button>
+			<button class="btn btn-warning">Warnung</button>
+			<button class="btn btn-danger">Gefahr</button>
+			<button class="btn btn-default" disabled>Gesperrt</button>
+			<a href="#" class="btn btn-link">Link</a>
+		</p>
+		<p class="pv-row">
+			<span class="label label-default">default</span>
+			<span class="label label-primary">primary</span>
+			<span class="label label-success">success</span>
+			<span class="label label-info">info</span>
+			<span class="label label-warning">warning</span>
+			<span class="label label-danger">danger</span>
+			<span class="badge">14</span>
+		</p>
+		<p>Ein <a href="#">Verweis im Fließtext</a>, <code>etwas Code</code>, <span class="text-muted">gedämpfter Text</span>,
+		   <span class="text-success">Erfolg</span>, <span class="text-warning">Warnung</span>, <span class="text-danger">Fehler</span>.</p>
+	</div>
+
+	<!-- ===== Panels, progress, dropdown ===== -->
+	<div class="pv-section">
+		<h2>Flächen, Fortschritt, Aufklappmenü</h2>
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="panel panel-default">
+					<div class="panel-heading"><h3 class="panel-title">Speicherbelegung</h3></div>
+					<div class="panel-body">
+						<p>example.com</p>
+						<div class="progress"><div class="progress-bar" style="width:38%"></div><span>38 %</span></div>
+						<p style="margin-top:12px">shop.example.com</p>
+						<div class="progress"><div class="progress-bar progress-bar-warning" style="width:84%"></div><span>84 %</span></div>
+						<p style="margin-top:12px">alt.example.org</p>
+						<div class="progress"><div class="progress-bar progress-bar-danger" style="width:97%"></div><span>97 %</span></div>
+					</div>
+					<div class="panel-footer">Stand: 01.09.2026</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="panel panel-default">
+					<div class="panel-heading"><h3 class="panel-title">Aufklappmenü</h3></div>
+					<div class="panel-body">
+						<div class="btn-group open">
+							<button class="btn btn-default dropdown-toggle" type="button">Aktion wählen <span class="caret"></span></button>
+							<ul class="dropdown-menu">
+								<li><a href="#">Bearbeiten</a></li>
+								<li class="active"><a href="#">Duplizieren</a></li>
+								<li class="divider"></li>
+								<li><a href="#">Löschen</a></li>
+							</ul>
+						</div>
+						<div class="well" style="margin-top:150px">Ein Hinweiskasten (<code>.well</code>).</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- ===== Modal ===== -->
+	<div class="pv-section">
+		<h2>Dialog</h2>
+		<div class="modal" style="display:block;position:relative;z-index:auto">
+			<div class="modal-dialog" style="margin:0">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close">&times;</button>
+						<h4 class="modal-title">Ausstehende Änderungen</h4>
+					</div>
+					<div class="modal-body">
+						<ul><li><strong>Websites:</strong> 3</li><li><strong>DNS-Einträge:</strong> 4</li></ul>
+					</div>
+					<div class="modal-footer"><button type="button" class="btn btn-default">Schließen</button></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- ===== Search suggestions ===== -->
+	<div class="pv-section">
+		<h2>Suchvorschläge</h2>
+		<div class="gs-container" style="height:170px">
+			<ul class="gs-resultbox" style="position:relative;top:0">
+				<li class="gs-cheader"><p class="gs-cheader-title">Websites</p><p class="gs-cheader-limit">3 von 12</p></li>
+				<li class="gs-cdata"><p><span class="gs-cdata-title">example.com</span>web-01.example.net</p></li>
+				<li class="gs-cdata"><p><span class="gs-cdata-title">shop.example.com</span>web-01.example.net</p></li>
+				<li class="gs-cdata"><p><span class="gs-cdata-title">alt.example.org</span>web-02.example.net</p></li>
+			</ul>
+		</div>
+	</div>
+
+	<!-- ===== Diff view ===== -->
+	<div class="pv-section">
+		<h2>Konfigurationsvergleich</h2>
+		<div class="finediff">
+			ServerName example.com<br>
+			<del>php_admin_value memory_limit 128M</del><br>
+			<ins>php_admin_value memory_limit 256M</ins><br>
+			DocumentRoot /var/www/example.com/web
+		</div>
+	</div>
+
+	<!-- ===== Context states ===== -->
+	<div class="pv-section">
+		<h2>Zustandsfarben in Tabellen</h2>
+		<div class="table-wrapper">
+		<table class="table table-hover">
+			<thead class="dark"><tr><th>Zustand</th><th>Beschreibung</th></tr></thead>
+			<tbody>
+				<tr class="success"><td>success</td><td>Übertragen</td></tr>
+				<tr class="info"><td>info</td><td>Vorgemerkt</td></tr>
+				<tr class="warning"><td>warning</td><td>Läuft bald ab</td></tr>
+				<tr class="danger"><td>danger</td><td>Deaktiviert</td></tr>
+				<tr class="active"><td>active</td><td>Ausgewählt</td></tr>
+			</tbody>
+		</table>
+		</div>
+		<p><span class="bg-success">bg-success</span> <span class="bg-info">bg-info</span>
+		   <span class="bg-warning">bg-warning</span> <span class="bg-danger">bg-danger</span>
+		   <mark>markierter Text</mark></p>
+	</div>
+
+	<!-- ===== More Bootstrap surfaces ===== -->
+	<div class="pv-section">
+		<h2>Weitere Bootstrap-Flächen</h2>
+		<ol class="breadcrumb"><li><a href="#">Start</a></li><li><a href="#">Websites</a></li><li class="active">example.com</li></ol>
+		<div class="row">
+			<div class="col-sm-4">
+				<div class="panel panel-success"><div class="panel-heading">panel-success</div><div class="panel-body">Inhalt</div></div>
+			</div>
+			<div class="col-sm-4">
+				<div class="panel panel-warning"><div class="panel-heading">panel-warning</div><div class="panel-body">Inhalt</div></div>
+			</div>
+			<div class="col-sm-4">
+				<div class="panel panel-danger"><div class="panel-heading">panel-danger</div><div class="panel-body">Inhalt</div></div>
+			</div>
+		</div>
+		<div class="list-group">
+			<a href="#" class="list-group-item">Normaler Eintrag</a>
+			<a href="#" class="list-group-item active">Ausgewählter Eintrag</a>
+			<a href="#" class="list-group-item list-group-item-success">Erfolg</a>
+			<a href="#" class="list-group-item list-group-item-warning">Warnung</a>
+			<a href="#" class="list-group-item list-group-item-danger">Fehler</a>
+			<a href="#" class="list-group-item disabled">Gesperrter Eintrag</a>
+		</div>
+		<ul class="pager"><li><a href="#">Zurück</a></li><li class="disabled"><a href="#">Weiter</a></li></ul>
+		<div class="progress"><div class="progress-bar progress-bar-info progress-bar-striped" style="width:55%"></div><span>progress-bar-info, gestreift</span></div>
+	</div>
+
+	<!-- ===== select2 (static markup) ===== -->
+	<div class="pv-section">
+		<h2>Auswahlfeld (select2)</h2>
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="select2-container select2-dropdown-open" style="width:100%">
+					<a class="select2-choice"><span class="select2-chosen">web-01.example.net</span><span class="select2-arrow"><b></b></span></a>
+				</div>
+				<div class="select2-drop select2-drop-active" style="position:relative;width:100%;display:block">
+					<div class="select2-search"><input type="text" class="select2-input" value="web"></div>
+					<ul class="select2-results">
+						<li class="select2-result"><div class="select2-result-label">web-01.<em>example</em>.net</div></li>
+						<li class="select2-result select2-highlighted"><div class="select2-result-label">web-02.<em>example</em>.net</div></li>
+						<li class="select2-result select2-disabled"><div class="select2-result-label">web-03.example.net (offline)</div></li>
+					</ul>
+					<li class="select2-more-results">Weitere Treffer werden geladen …</li>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="select2-container select2-container-multi" style="width:100%">
+					<ul class="select2-choices">
+						<li class="select2-search-choice"><div>example.com</div><a class="select2-search-choice-close"></a></li>
+						<li class="select2-search-choice select2-search-choice-focus"><div>shop.example.com</div><a class="select2-search-choice-close"></a></li>
+						<li class="select2-search-field"><input type="text" class="select2-input" value=""></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- ===== Date picker (static markup) ===== -->
+	<div class="pv-section">
+		<h2>Datumsauswahl</h2>
+		<div class="datetimepicker datetimepicker-dropdown-bottom-left" style="position:relative;display:block;top:0;left:0">
+			<div class="datetimepicker-days" style="display:block">
+				<table class="table-condensed">
+					<thead>
+						<tr><th class="prev">‹</th><th colspan="5" class="switch picker-switch">September 2026</th><th class="next">›</th></tr>
+						<tr><th class="dow">Mo</th><th class="dow">Di</th><th class="dow">Mi</th><th class="dow">Do</th><th class="dow">Fr</th><th class="dow">Sa</th><th class="dow">So</th></tr>
+					</thead>
+					<tbody>
+						<tr><td class="day old">31</td><td class="day today">1</td><td class="day">2</td><td class="day">3</td><td class="day">4</td><td class="day">5</td><td class="day">6</td></tr>
+						<tr><td class="day">7</td><td class="day">8</td><td class="day active">9</td><td class="day">10</td><td class="day">11</td><td class="day">12</td><td class="day">13</td></tr>
+						<tr><td class="day">14</td><td class="day disabled">15</td><td class="day">16</td><td class="day">17</td><td class="day">18</td><td class="day">19</td><td class="day new">20</td></tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	</div><!-- /#content -->
+
+	<!-- ===== Sidebar ===== -->
+	<div id="sidebar" class="news-sidebar left">
+		<header><a href="#">Neuigkeiten</a></header>
+		<ul>
+			<li><a href="#">ISPConfig 3.3.2 veröffentlicht</a></li>
+			<li><a href="#">Sicherheitshinweis für Dovecot</a></li>
+			<li><a href="#">Wartungsfenster am 14.09.</a></li>
+		</ul>
+	</div>
+	</div><!-- /.clear -->
+
+	<footer id="footer">powered by <a href="#">ISPConfig</a></footer>
+</div>
+</div>
+</div>
+</body>
+</html>
