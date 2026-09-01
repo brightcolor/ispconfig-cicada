@@ -1488,8 +1488,15 @@ a.list-group-item:focus {
 	box-shadow: 0 4px 10px rgba(0, 0, 0, .6);
 }
 
-.select2-search input {
-	background-color: var(--cic-surface);
+/* select2 stacks the magnifier sprite on top of a white gradient. Setting
+   background-color alone leaves the gradient, so the shorthand is restated
+   with the sprite kept and the gradient dropped. The path is relative to
+   this file so a subdirectory install still finds it. */
+.select2-search input,
+.select2-drop.select2-drop-above .select2-search input {
+	background: var(--cic-surface)
+	            url('../../../default/assets/stylesheets/select2.png')
+	            no-repeat 100% -22px;
 	border-color: var(--cic-line);
 	color: var(--cic-text);
 }
