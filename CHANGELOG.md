@@ -4,6 +4,25 @@ Alle nennenswerten Änderungen an diesem Theme.
 Das Format folgt [Keep a Changelog](https://keepachangelog.com/de/1.1.0/),
 die Versionierung [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.2.1] — 2026-09-01
+
+### Behoben
+
+- **Die Skripte waren nicht ausführbar.** Git unter Windows setzt das
+  Ausführbar-Bit nicht selbst; im Index standen `install.sh`,
+  `check-paths.sh` und `make-templates.sh` als `100644`. Nach einem Klon wäre
+  `./install.sh` an „Permission denied" gescheitert — und weil der Installer
+  die beiden anderen über `sh` aufruft, wäre es erst beim ersten echten
+  Einsatz aufgefallen.
+
+### Neu
+
+- Lizenz: BSD-2-Clause, wie das Cicada-Vorbild. Ohne Lizenzdatei gilt in
+  einem öffentlichen Repository formal „alle Rechte vorbehalten".
+- Der Herkunftsabschnitt benennt, dass `make-templates.sh` auf dem
+  Zielsystem zwei Dateien aus dem Standard-Theme ableitet; die gehören dem
+  ISPConfig-Projekt und werden nicht mitgeliefert.
+
 ## [0.2.0] — 2026-09-01
 
 Unterstützung für ISPConfig 3.2. Die Stilvorlage selbst blieb unverändert —

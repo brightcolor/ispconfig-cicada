@@ -10,7 +10,7 @@ handelt, kantige 2–3-px-Radien.
 
 **Läuft auf ISPConfig 3.2 und 3.3.** Geprüft gegen 3.2.12p1 und 3.3.2.
 
-**Stand: 0.2.0 — auf einem echten ISPConfig-System noch nicht gelaufen.**
+**Stand: 0.2.1 — auf einem echten ISPConfig-System noch nicht gelaufen.**
 Gebaut und geprüft wurde gegen den Quelltext beider Zweige und gegen eine
 Prüfseite mit echtem Panel-Markup (siehe *Prüfen*). Vor dem Produktivbetrieb
 auf einem Testsystem durchspielen.
