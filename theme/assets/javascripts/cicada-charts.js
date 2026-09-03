@@ -60,18 +60,57 @@
 	Chart.register({
 		id: 'cicadaDarkLine',
 		beforeInit: function (chart) {
-			var sets = chart.config && chart.config.data && chart.config.data.datasets;
-			if (!sets) {
+			var conf = chart.config;
+			if (!conf || conf._cicadaDone) {
 				return;
 			}
-			sets.forEach(function (set) {
-				if (set.borderColor === DASHLET_LINE) {
-					set.borderColor = ACCENT;
-				}
-				if (set.backgroundColor === DASHLET_FILL) {
-					set.backgroundColor = ACCENT_FILL;
-				}
-			});
+			conf._cicadaDone = true;
+
+			var sets = conf.data && conf.data.datasets;
+			if (sets) {
+				sets.forEach(function (set) {
+					if (set.borderColor === DASHLET_LINE) {
+						set.borderColor = ACCENT;
+					}
+					if (set.backgroundColor === DASHLET_FILL) {
+						set.backgroundColor = ACCENT_FILL;
+					}
+				});
+			}
+
+			/* The dashlet supplies its own generateLabels() and paints the
+			   legend swatch white — a glaring block on a dark ground. Wrap the
+			   function rather than replace it, so the labels it builds stay
+			   intact and only the hard-coded white is swapped. */
+			var opts = conf.options;
+			var labels = opts && opts.plugins && opts.plugins.legend && opts.plugins.legend.labels;
+			if (!labels) {
+				return;
+			}
+			if (labels.color === undefined) {
+				labels.color = TEXT;
+			}
+			if (typeof labels.generateLabels === 'function') {
+				var inner = labels.generateLabels;
+				labels.generateLabels = function (c) {
+					return inner.call(this, c).map(function (item) {
+						if (item.fillStyle === 'white') {
+							item.fillStyle = ACCENT;
+						}
+						if (item.strokeStyle === 'white') {
+							item.strokeStyle = ACCENT;
+						}
+						/* Where a chart brings its own generateLabels(), the
+						   legend text follows item.fontColor and ignores
+						   labels.color — measured on the canvas: setting only
+						   labels.color left the text black. */
+						if (item.fontColor === undefined) {
+							item.fontColor = TEXT;
+						}
+						return item;
+					});
+				};
+			}
 		}
 	});
 })();

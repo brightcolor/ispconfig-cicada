@@ -4,6 +4,30 @@ Alle nennenswerten Änderungen an diesem Theme.
 Das Format folgt [Keep a Changelog](https://keepachangelog.com/de/1.1.0/),
 die Versionierung [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.1] — 2026-09-03
+
+### Behoben
+
+- **Die Stilvorlage kam nicht beim Browser an.** `cicada.css` und
+  `cicada-charts.js` wurden ohne Versionsangabe eingebunden. Der Dateiname
+  ändert sich nie, und das Panel sendet keine Kopfzeilen, die einen Browser
+  vom Zwischenspeicher abhalten — nach einem Theme-Update blieb die alte
+  Fassung aktiv. Am Dashboard sah das aus, als greife die neue Regel nicht:
+  gemessen wurden 49 809 Bytes im Browser gegen 50 467 auf dem Server.
+  `make-templates.sh` hängt jetzt `?v=<Prüfsumme>` an beide Verweise. Eine
+  Prüfsumme statt eines Zeitstempels, damit die Adresse sich nur bewegt, wenn
+  der Inhalt es tut. Die Pfadprüfung schneidet Abfrageteile ohnehin ab.
+- **Legendentext blieb schwarz.** Bringt ein Diagramm ein eigenes
+  `generateLabels()` mit — das Dashlet tut das —, folgt die Beschriftung
+  `item.fontColor` und ignoriert `labels.color`. Auf der Zeichenfläche
+  nachgemessen: mit gesetztem `labels.color` wurden weiterhin 155 schwarze
+  Bildpunkte gezeichnet. Der Umschlag um `generateLabels()` setzt jetzt
+  zusätzlich `fontColor`.
+- **Weisse Legendenkästchen.** Dieselbe Funktion setzt `fillStyle` und
+  `strokeStyle` fest auf `white` — grelle Blöcke auf dunklem Grund. Der
+  Umschlag tauscht beide gegen den Akzentton, lässt aber jede andere Farbe
+  unberührt.
+
 ## [0.3.0] — 2026-09-03
 
 ### Neu

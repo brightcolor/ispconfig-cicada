@@ -27,6 +27,17 @@ SRC="$THEMES/default/templates"
 
 mkdir -p "$OUT"
 
+# A browser that already holds cicada.css keeps serving it after an update —
+# the file name never changes, and ISPConfig sends no cache headers that would
+# stop it. The panel's own sheets carry ?ver= for the same reason. A checksum
+# rather than a timestamp, so the URL only moves when the content does.
+sum() {
+	[ -f "$1" ] || return 0
+	printf '?v=%s' "$(cksum "$1" | cut -d' ' -f1)"
+}
+CSS_VER="$(sum "$THEMES/cicada/assets/stylesheets/cicada.css")"
+JS_VER="$(sum "$THEMES/cicada/assets/javascripts/cicada-charts.js")"
+
 for tpl in main main_login; do
 	file="$SRC/$tpl.tpl.htm"
 	[ -f "$file" ] || { printf 'error: %s missing\n' "$file" >&2; exit 1; }
@@ -46,8 +57,8 @@ for tpl in main main_login; do
 	sed -e "s|themes/<tmpl_var name='current_theme'>/assets/|themes/default/assets/|g" \
 	    -e "\|stylesheets/themes/default/theme\.min\.css|d" \
 	    -e "s|#cc151c|#dd630d|g" \
-	    -e "\|</head>|i\\  <link rel='stylesheet' href='<CICADA_PREFIX>themes/cicada/assets/stylesheets/cicada.css' />" \
-	    -e "\|js/chartjs/chart\.umd\.js|a\\  <script src='<CICADA_PREFIX>themes/cicada/assets/javascripts/cicada-charts.js'></script>" \
+	    -e "\|</head>|i\\  <link rel='stylesheet' href='<CICADA_PREFIX>themes/cicada/assets/stylesheets/cicada.css$CSS_VER' />" \
+	    -e "\|js/chartjs/chart\.umd\.js|a\\  <script src='<CICADA_PREFIX>themes/cicada/assets/javascripts/cicada-charts.js$JS_VER'></script>" \
 	    "$file" > "$OUT/$tpl.tpl.htm"
 
 	# main.tpl.htm is served from /, main_login.tpl.htm from /login/
