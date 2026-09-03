@@ -82,8 +82,11 @@ if [ -d "$TARGET" ]; then
 	mv "$TARGET" "$BACKUP"
 fi
 
-mkdir -p "$TARGET/assets/stylesheets"
+mkdir -p "$TARGET/assets/stylesheets" "$TARGET/assets/javascripts"
 cp "$HERE/theme/assets/stylesheets/cicada.css" "$TARGET/assets/stylesheets/cicada.css"
+# Only referenced by the template when the panel ships Chart.js (3.3+), but
+# copied either way so an in-place ISPConfig update needs no second step.
+cp "$HERE/theme/assets/javascripts/cicada-charts.js" "$TARGET/assets/javascripts/cicada-charts.js"
 
 printf 'Deriving templates from the default theme:\n'
 sh "$HERE/tools/make-templates.sh" "$THEMES" "$TARGET/templates"

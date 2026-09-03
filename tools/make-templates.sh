@@ -40,10 +40,14 @@ for tpl in main main_login; do
 	# The pattern is anchored on "themes/<tmpl_var ...>/assets/" with no regex
 	# metacharacters: an unescaped dot here also matches "='/themes/" and
 	# shreds the favicon attributes.
+	# 5. where the panel ships Chart.js (3.3 and up), cicada-charts.js follows
+	#    it and overrides the light-page defaults it would otherwise draw with.
+	#    On 3.2 there is no chart.umd.js line, so nothing is inserted.
 	sed -e "s|themes/<tmpl_var name='current_theme'>/assets/|themes/default/assets/|g" \
 	    -e "\|stylesheets/themes/default/theme\.min\.css|d" \
 	    -e "s|#cc151c|#dd630d|g" \
 	    -e "\|</head>|i\\  <link rel='stylesheet' href='<CICADA_PREFIX>themes/cicada/assets/stylesheets/cicada.css' />" \
+	    -e "\|js/chartjs/chart\.umd\.js|a\\  <script src='<CICADA_PREFIX>themes/cicada/assets/javascripts/cicada-charts.js'></script>" \
 	    "$file" > "$OUT/$tpl.tpl.htm"
 
 	# main.tpl.htm is served from /, main_login.tpl.htm from /login/
@@ -73,6 +77,22 @@ for tpl in main main_login; do
 	after="$(grep -c "href='" "$OUT/$tpl.tpl.htm" || true)"
 	[ "$before" = "$after" ] || { printf 'error: %s has %s href attributes, source had %s\n' "$tpl" "$after" "$before" >&2; exit 1; }
 
-	printf '  %s.tpl.htm  (%s stylesheets, cicada.css last)\n' "$tpl" \
-		"$(grep -c "rel='stylesheet'" "$OUT/$tpl.tpl.htm" || true)"
+	# the chart script belongs exactly where Chart.js is, and nowhere else
+	charts="$(grep -c "cicada-charts.js" "$OUT/$tpl.tpl.htm" || true)"
+	if grep -q "js/chartjs/chart.umd.js" "$file"; then
+		[ "$charts" = "1" ] || { printf 'error: %s ships Chart.js but references cicada-charts.js %s times, expected 1\n' "$tpl" "$charts" >&2; exit 1; }
+		# it has to come after Chart.js, or the defaults are set too late
+		order="$(grep -n "chart.umd.js\|cicada-charts.js" "$OUT/$tpl.tpl.htm" | head -2 | tail -1)"
+		case "$order" in
+			*cicada-charts.js*) ;;
+			*) printf 'error: %s loads cicada-charts.js before Chart.js\n' "$tpl" >&2; exit 1 ;;
+		esac
+		note=", charts themed"
+	else
+		[ "$charts" = "0" ] || { printf 'error: %s has no Chart.js but references cicada-charts.js\n' "$tpl" >&2; exit 1; }
+		note=""
+	fi
+
+	printf '  %s.tpl.htm  (%s stylesheets, cicada.css last%s)\n' "$tpl" \
+		"$(grep -c "rel='stylesheet'" "$OUT/$tpl.tpl.htm" || true)" "$note"
 done

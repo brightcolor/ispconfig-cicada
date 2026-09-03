@@ -4,6 +4,33 @@ Alle nennenswerten Änderungen an diesem Theme.
 Das Format folgt [Keep a Changelog](https://keepachangelog.com/de/1.1.0/),
 die Versionierung [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.0] — 2026-09-03
+
+### Neu
+
+- **Dunkle Diagramme auf dem Dashboard.** ISPConfig 3.3 bringt vier
+  Verlaufsdiagramme für Last, Speicher und Netzverkehr mit. Das Dashlet malt
+  seine Zeichenflächen per Inline-Stil weiß und lässt Chart.js in dessen
+  Vorgabefarben für helle Seiten zeichnen — auf dunklem Grund blieben vier
+  weiße Kästen stehen. Neu ist `theme/assets/javascripts/cicada-charts.js`:
+  es setzt Textfarbe, Gitterlinien und Tooltip-Fläche auf die Palette des
+  Themes und färbt die fest verdrahtete türkise Linie in den Akzentton um.
+  Die Zeichenfläche selbst wird in `cicada.css` durchsichtig gestellt — gegen
+  einen Inline-Stil hilft nur `!important`.
+- **Der Generator bindet das Skript selbst ein.** `make-templates.sh` hängt
+  `cicada-charts.js` direkt hinter `chart.umd.js` und prüft danach beides:
+  dass es genau einmal vorkommt, wo der Panel Chart.js mitbringt, und gar
+  nicht, wo er es nicht tut — die Anmeldeseite lädt keine Diagramme. Ebenso
+  wird die Reihenfolge geprüft; nach Chart.js gesetzte Vorgaben greifen
+  nicht mehr.
+
+### Hintergrund
+
+Aufgefallen nach einem Update von ISPConfig 3.2.12p1 auf 3.3: Die installierten
+Templates stammten noch vom 3.2-Zweig und kannten `chart.umd.js` nicht, sodass
+die Diagramme leer blieben. Der Generator holt das beim erneuten Lauf nach —
+weshalb `./install.sh` nach jedem Panel-Update Pflicht bleibt.
+
 ## [0.2.2] — 2026-09-01
 
 ### Behoben

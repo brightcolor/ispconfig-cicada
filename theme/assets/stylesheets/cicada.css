@@ -1911,3 +1911,21 @@ span[style*="#000000"],
 		transition-duration: .01ms !important;
 	}
 }
+
+/* ==========================================================================
+   19. Dashboard charts (ISPConfig 3.3+)
+
+   The metrics dashlet paints its canvases white with an inline style and
+   hard-codes white legend text, which reads as four blank boxes on a dark
+   ground. The inline style can only be beaten with !important; the colours
+   Chart.js draws itself are set in cicada-charts.js, because they live in
+   JavaScript defaults rather than in CSS.
+   ========================================================================== */
+
+#loadchart,
+#memchart,
+#rxchart,
+#txchart,
+.pnl_formsarea canvas {
+	background-color: transparent !important;
+}

@@ -89,6 +89,10 @@ zusätzlich `bootstrap-icons.min.css` und `chart.umd.js`). Ein erneuter Lauf
 zieht beides nach. Die Stilvorlage selbst bleibt unverändert — sie deckt
 beide Zweige ab.
 
+Unterbleibt der Lauf, fällt es zuerst am Dashboard auf: die vier
+Verlaufsdiagramme von 3.3 bleiben leer, weil das Template aus dem 3.2-Zweig
+`chart.umd.js` nicht lädt.
+
 ## Aufbau
 
 Im Panel liegen am Ende vier Dateien, keine Kopie von Bootstrap:
