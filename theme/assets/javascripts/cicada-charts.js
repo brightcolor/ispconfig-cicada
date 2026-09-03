@@ -79,9 +79,11 @@
 			}
 
 			/* The dashlet supplies its own generateLabels() and paints the
-			   legend swatch white — a glaring block on a dark ground. Wrap the
-			   function rather than replace it, so the labels it builds stay
-			   intact and only the hard-coded white is swapped. */
+			   legend swatch white — a glaring block on a dark ground. Its own
+			   comment says the box was meant to be hidden, so drop it: one
+			   dataset per chart, and the line underneath already carries the
+			   colour. Wrap the function rather than replace it, so the labels
+			   it builds stay intact. */
 			var opts = conf.options;
 			var labels = opts && opts.plugins && opts.plugins.legend && opts.plugins.legend.labels;
 			if (!labels) {
@@ -90,15 +92,20 @@
 			if (labels.color === undefined) {
 				labels.color = TEXT;
 			}
+			labels.boxWidth = 0;
+			labels.boxHeight = 0;
 			if (typeof labels.generateLabels === 'function') {
 				var inner = labels.generateLabels;
 				labels.generateLabels = function (c) {
 					return inner.call(this, c).map(function (item) {
+						/* boxWidth 0 removes the swatch's footprint; making it
+						   transparent as well keeps a stray outline from being
+						   stroked at zero width. */
 						if (item.fillStyle === 'white') {
-							item.fillStyle = ACCENT;
+							item.fillStyle = 'rgba(0, 0, 0, 0)';
 						}
 						if (item.strokeStyle === 'white') {
-							item.strokeStyle = ACCENT;
+							item.strokeStyle = 'rgba(0, 0, 0, 0)';
 						}
 						/* Where a chart brings its own generateLabels(), the
 						   legend text follows item.fontColor and ignores

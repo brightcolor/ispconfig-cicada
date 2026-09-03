@@ -4,6 +4,18 @@ Alle nennenswerten Änderungen an diesem Theme.
 Das Format folgt [Keep a Changelog](https://keepachangelog.com/de/1.1.0/),
 die Versionierung [Semantic Versioning](https://semver.org/lang/de/).
 
+## [0.3.2] — 2026-09-03
+
+### Geändert
+
+- **Kein Farbkästchen mehr in der Diagrammlegende.** Es trug nichts bei: jedes
+  der vier Diagramme zeigt genau eine Kurve, und deren Farbe steht direkt
+  darunter. `boxWidth` und `boxHeight` stehen jetzt auf 0, sodass auch der
+  Platz dafür verschwindet und die Beschriftung frei über dem Verlauf steht.
+  Die Kommentare im Dashlet legen nahe, dass das Kästchen ohnehin verborgen
+  werden sollte. Zusätzlich werden die fest gesetzten Weißtöne durchsichtig
+  gestellt, damit bei Breite 0 keine Restlinie gezeichnet wird.
+
 ## [0.3.1] — 2026-09-03
 
 ### Behoben
